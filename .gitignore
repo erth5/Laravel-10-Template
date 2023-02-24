@@ -21,3 +21,15 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
+
+
+# IDE
+/.idea
+/.vscode
+
+# Laravel vendor
+public/vendor/
+resources/views/vendor*
+
+# example image
+#!storage/app/public/Resource_Image_routes
