@@ -1,0 +1,172 @@
+<?php
+
+namespace App\Services;
+
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Request as SupportRequest;
+
+/**
+ * Class UtilsService.
+ */
+class UtilsService
+{
+    public ?array $tableColumnNames = null;
+    public ?array $checkboxtableColumnNames = null;
+    public string $databaseName = "";
+    /**
+     * prüft, ob das Objekt Request den angegebenen Regeln entspricht
+     * @param request req request
+     * @param validationRules associative array Array mit Validierungsregeln: https://laravel.com/docs/10.x/validation#manually-creating-validators
+     * @param validationErrorMessage string Fehlermeldung wenn Validierung mit Fehler abbricht
+     * */
+    public function validateRequest($req, $validationRules)
+    {
+        $validator = Validator::make($req->all(), $validationRules);
+
+        if ($validator->fails()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Füllt ein Objekt mit gegebenen Daten
+     * @param object Objekt Model, dessen Attribute gefüllt werden sollen
+     * @param mixed Daten mit den Schlüsselnamen und Werten des zu füllenden Objektes
+     * @return object Objekt Model, mit gefüllten Attributen
+     */
+    public function fillObject($object, $data)
+    {
+        $object = $this->fillObjectRecursiv($object, $data);
+        return $object;
+    }
+
+    public function fillObjectIterativ($object, $data)
+    {
+        /** ChatGPT
+         * $childObject = $currentObject->{$key} ?? null;
+         *  Call to undefined method App\Models\User::more()
+         *  -> Es darf nicht key durchgereicht werden, sonden immer value
+         */
+    }
+
+    public function fillObjectRecursiv($object, $data)
+    {
+        if (!$this->databaseName) {
+            $this->databaseName = strtolower(Str::plural(class_basename($object), 2));
+            $this->tableColumnNames = $this->getDbColumnsWithoutBoolean($this->databaseName);
+            $this->checkboxtableColumnNames = $this->getDbBooleanColumns($this->databaseName);
+        }
+
+        if ($data instanceof Model || is_object($data)) {
+            $data = $data->getAttributes();
+        } elseif (gettype($data) instanceof Request) {
+            // gettype($data) instanceof SupportRequest not supportet
+            $object = $this->fillObjectFromRequest($object, $data);
+            return $object;
+        }
+
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $object = $this->fillObjectRecursiv($object, $value);
+                continue;
+            }
+
+            if (is_scalar($value)) {
+                if (in_array($key, $this->tableColumnNames) || in_array($key, $this->checkboxtableColumnNames))
+                    $object->{$key} = $value;
+            } else {
+                Log::debug("the key " . $key . " with value " . $value . " not found in " . get_class($object));
+            }
+        }
+        return $object;
+    }
+
+    /**
+     * füllt ein Model mit den Request Daten (inklusive Checkboxen)
+     * @param object Objekt Model, dessen Attribute gefüllt werden sollen
+     * @param array tableColumnNames array Array von attribut-Namen (string) aus dem Request, die im Objekt gefüllt werden sollen
+     * @param array checkboxtableColumnNames array Array von attribut-Namen (string) die checkbox-werte (boolean-werte) repräsentieren, die aus dem Request, die im Objekt gefüllt werden sollen
+     * @param request req request request Request oder SupportRequest
+     * */
+    public function fillObjectFromRequest($object,Request $req, $withNullValues = true)
+    {
+        $databaseName = strtolower(Str::plural(class_basename($object), 2));
+        $tableColumnNames = $this->getDbColumnsWithoutBoolean($databaseName);
+        $checkboxtableColumnNames = $this->getDbBooleanColumns($databaseName);
+
+        if (isset($tableColumnNames)) {
+            foreach ($tableColumnNames as $columnName) {
+                if ($req->has($columnName)) {
+                    if ($req->get($columnName) != null || $withNullValues) {
+                        if ($object->{$columnName} != $req->{$columnName}) {
+                            Log::debug("Update DB Column " . $columnName .
+                                " from " . $object->{$columnName} .
+                                " to " . $req->{$columnName});
+                            $object->{$columnName} = $req->{$columnName};
+                        }
+                    }
+                }
+            }
+        }
+
+        if (isset($checkboxtableColumnNames)) {
+            foreach ($checkboxtableColumnNames as $checkboxColumnName) {
+                $req->has($checkboxColumnName) ? $object->{$checkboxColumnName} = true : $object->{$checkboxColumnName} = false;
+            }
+        }
+        return $object;
+    }
+
+    /**
+     * Befüllt ein Eloquent Model mit Daten aus einem Array
+     *
+     * @param object Objekt Model, dessen Attribute gefüllt werden sollen
+     * @param array $array mit Daten
+     * @return object gefülltes Objekt
+     */
+    public function fillObjectFromArrayRecursiv($object, array $array)
+    {
+        $this->databaseName = strtolower(Str::plural(class_basename($object), 2));
+        if (!$this->tableColumnNames)
+            $this->tableColumnNames = $this->getDbColumnsWithoutBoolean($this->databaseName);
+        if (!$this->checkboxtableColumnNames)
+            $this->checkboxtableColumnNames ?? $this->getDbBooleanColumns($this->databaseName);
+
+        foreach ($array as $key => $value) {
+            if (is_string($value)) {
+                if (in_array($key, $this->tableColumnNames))
+                    $object->{$key} = $value;
+            }
+        }
+        return $object;
+    }
+
+    private function getDbColumnsWithoutBoolean(string $database)
+    {
+        $tableColumns = array();
+        $contents = Schema::getColumnListing($database);
+        foreach ($contents as $content) {
+            if (Schema::getColumnType($database, $content) != 'boolean')
+                $tableColumns[] = $content;
+        }
+        return $tableColumns;
+    }
+
+    private function getDbBooleanColumns($database)
+    {
+        $tableColumns = array();
+        $booleans = Schema::getColumnListing($database);
+        foreach ($booleans as $maybeBool) {
+            if (Schema::getColumnType($database, $maybeBool) == 'boolean')
+                $tableColumns[] = $maybeBool;
+        }
+        return $tableColumns;
+    }
+}
