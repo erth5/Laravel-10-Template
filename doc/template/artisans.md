@@ -1,8 +1,23 @@
 # Artisans
 
+## User
+
 ```terminal
-php artisan make:model Helper/Tag -a
-php artisan make:controller Helper/TagController --resource
+php artisan make:request StoreUserRequest
+php artisan make:request UpdateUserRequest
+php artisan make:controller UserController --resource
+```
+
+## Tag
+
+```terminal
+php artisan make:model Tag -a
+```
+
+## Debug
+
+```terminal
+php artisan make:controller DebugController
 ```
 
 ```terminal

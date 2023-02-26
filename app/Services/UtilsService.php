@@ -95,7 +95,7 @@ class UtilsService
      * @param array checkboxtableColumnNames array Array von attribut-Namen (string) die checkbox-werte (boolean-werte) repräsentieren, die aus dem Request, die im Objekt gefüllt werden sollen
      * @param request req request request Request oder SupportRequest
      * */
-    public function fillObjectFromRequest($object,Request $req, $withNullValues = true)
+    public function fillObjectFromRequest($object, Request $req, $withNullValues = true)
     {
         $databaseName = strtolower(Str::plural(class_basename($object), 2));
         $tableColumnNames = $this->getDbColumnsWithoutBoolean($databaseName);
@@ -168,5 +168,43 @@ class UtilsService
                 $tableColumns[] = $maybeBool;
         }
         return $tableColumns;
+    }
+
+    /**
+     * Prüft alle Datenbankfelder
+     * @param Database string  $databaseName Name der Datenbank
+     * @param array $columns erwartete Datenbank-Spalten-Namen
+     */
+    public function proofAllDatabaseFields(string $databaseName, $columns)
+    {
+        $currentColumns = Schema::getColumnListing($databaseName);
+        foreach ($columns as $column) {
+            if (!in_array($column, $currentColumns))
+                return false;
+        }
+        foreach ($currentColumns as $currentColumn) {
+            if (!in_array($currentColumn, $columns))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * @param class-string  $model \Illuminate\Database\Eloquent\Model
+     * @param array $columns erwartete Datenbank-Spalten-Namen
+     */
+    public function proofDatabaseFields($modelClass, $columns)
+    {
+        $fillable = new $modelClass;
+        $currentColumns = $fillable->getFillable();
+        foreach ($columns as $column) {
+            if (!in_array($column, $currentColumns))
+                return false;
+        }
+        foreach ($currentColumns as $currentColumn) {
+            if (!in_array($currentColumn, $columns))
+                return false;
+        }
+        return true;
     }
 }
