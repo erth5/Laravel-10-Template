@@ -1,15 +1,13 @@
 <?php
 
-use App\Actions\CallAdjust;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\LangController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\DebugController;
-use App\Http\Controllers\Helper\TagController;
-use App\Http\Controllers\Example\LangController;
-use App\Http\Controllers\Example\UserController;
-use App\Http\Controllers\Example\ImageController;
-use App\Http\Controllers\Example\PersonController;
-use App\Http\Controllers\Example\IndexationController;
-use App\Http\Controllers\Example\PermissionAndRoleController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\PermissionAndRoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,24 +31,19 @@ Route::get('hello world', function () {
 });
 
 // unconventional, because no redirect
-$debugRoutes = array('example', 'test', 'debug', 'info', 'help', 'www');
+$debugRoutes = array('example', 'test', 'debug', 'info', 'help');
 foreach ($debugRoutes as $route) {
     Route::redirect($route . '/debug', '/debug', 301);  //generates 'any'
     Route::get($route . '/{name?}', [DebugController::class, 'index'])->name('debug');
 }
 
-Route::controller(IndexationController::class)->group(function () {
-    Route::get('/index/test', 'index');
-});
-
 Route::controller(PermissionAndRoleController::class)->group(function () {
-    Route::get('/permssion/admin', 'authorizeAdmin')->name('authorizeAdmin');
     Route::match(array('GET', 'POST'), '/permission/role', 'role')->name('editRolePermissions');
     Route::match(array('GET', 'POST'), '/permission/user', 'user')->name('editUserPermissions');
 });
 
 Route::resource('users', UserController::class)->only('exportExcel', 'exportCSV');
-Route::controller(UserController::class)->group(function(){
+Route::controller(UserController::class)->group(function () {
     Route::get('user/test', [UserController::class, 'test']);
 });
 
@@ -58,7 +51,6 @@ Route::resource('people', PersonController::class)->only('index', 'destroy');
 Route::controller(PersonController::class)->group(function () {
     Route::get('/person/test', 'test');
 });
-// Route::get('/person/adjust', CallAdjust::class)->name('adjust');
 
 Route::controller(ImageController::class)->group(function () {
     Route::get('/images', 'index')->name('image');

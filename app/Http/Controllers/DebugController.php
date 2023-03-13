@@ -34,7 +34,7 @@ class DebugController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($name = 'main', )
+    public function index($name = 'main',)
     {
         $url = Config::set('constants.info.url', 'http://example.de');
         switch ($name) {
@@ -74,8 +74,6 @@ class DebugController extends Controller
             case 'php':
                 return view('debug.info');
             case 'env':
-                return view('debug.env');
-            case 'env2':
                 $array = file("../.env", FILE_SKIP_EMPTY_LINES);
                 print_r($array);
                 echo ('<br>');
@@ -94,11 +92,6 @@ class DebugController extends Controller
                 dd($files);
             case 'lang':
                 return view('debug.lang');
-            case 'timezone':
-                echo 'current time: ' . \Carbon\Carbon::now() . '<br></br>';
-                $timezone = date_default_timezone_get();
-                echo "current server timezone: " . $timezone;
-                break;
             case 'path':
                 // current directory
                 echo (__DIR__);
@@ -121,7 +114,6 @@ class DebugController extends Controller
             case 'config':
                 $configValidation = (new ConfigValidator())->run();
                 return $configValidation;
-                break;
             case 'session':
                 $allSessions = session()->all();
                 dd($allSessions);

@@ -13,17 +13,16 @@
 
 <body>
 
-
     <x-debug.sessionStatus />
     <x-debug.style />
     <div style="float: left">
         <x-debug.menu />
     </div>
     <div style="margin: auto">
-        @yield('c')
+        <x-debug.env />
     </div>
     <div style="float: right">
-        <x-debug.constants />
+        @yield('c')
     </div>
 
 </body>

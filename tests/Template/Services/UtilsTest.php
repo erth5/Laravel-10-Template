@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Services;
+namespace Tests\Template\Services;
 
 use Tests\TestCase;
 use App\Models\User;
@@ -98,5 +98,4 @@ class UtilsTest extends TestCase
         $this->assertEquals('uil22093@omeie.com', $user->email);
         $this->assertEquals('7mZ7bc@JRubyq$', $user->password);
     }
-
 }

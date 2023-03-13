@@ -47,9 +47,3 @@
         @endisset
     @endisset
 </form>
-<form action="{{ route('authorizeAdmin') }}">
-    @csrf
-    <fieldset>
-        <button type="repair" value="repair">Vollzugriff Admin</button>
-    </fieldset>
-</form>

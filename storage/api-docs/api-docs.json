@@ -1,0 +1,46 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Integration Swagger in Laravel",
+        "description": "Implementation of Swagger with in Laravel",
+        "contact": {
+            "email": "admin@admin.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://development.com/api/1",
+            "description": "Dev server"
+        },
+        {
+            "url": "http://staging.com/api/1",
+            "description": "Staging server"
+        },
+        {
+            "url": "https://production.com/api/1",
+            "description": "LIVE server"
+        }
+    ],
+    "paths": {
+        "/api/users": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "An example endpoint"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Tag",
+            "description": "Demo Tag"
+        }
+    ]
+}

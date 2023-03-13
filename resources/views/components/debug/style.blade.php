@@ -1,4 +1,8 @@
 <style>
+    .disabled {
+        pointer-events: none;
+    }
+
     a {
         text-decoration: none;
     }

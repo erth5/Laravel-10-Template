@@ -5,40 +5,55 @@
 </blockquote>
 <a href="/info/db">Connection</a>
 <a href="/debug/php">PHP-Info</a>
+<a href="/debug/env">Environment</a>
 <blockquote>
-    <a href="/debug/env">EnvironmentPart</a>
-    <a href="/debug/env2">Environment</a>
-</blockquote>
 
+</blockquote>
 <a href="/debug/path">Path</a>
 <a href="/debug/views">View</a>
 <a href="/debug/controllers">Controller</a>
 <a href="/debug/models">Model</a>
-<blockquote></blockquote>
-<a href="/debug/config">configValidation</a>
-<a href="/info/lang">Language</a>
-<a href="/lang/lang_debug">{{ __('debug.lang_debug') }}</a>
-<a href="/info/timezone">TimeZone</a>
-<blockquote></blockquote>
-<a href="/route:list">RouteList</a>
-<a @if (env('TELESCOPE')) @else
-class="disabled" @endif href="/telescope">Telescope</a>
-<a @if (env('HORIZON')) @else class="disabled" @endif href="/horizon">Horizon</a>
-<a href="/log-viewer">Log-View</a>
-<a @if (env('SWAGGER')) @else class="disabled" @endif href="/api/documentation">Swagger</a>
-<a @if (env('SWAGGER')) @else class="disabled" @endif href="/docs/api-docs.json">Swagger-JSON</a>
-<a @if (env('VOJAGER')) @else class="disabled" @endif href="/admin">Voyager</a>
-<blockquote></blockquote>
+<blockquote>
+
+    <a href="/debug/config">configValidation</a>
+    <a href="/info/lang">Language</a>
+</blockquote>
+<blockquote>
+    <a href="/lang/lang_debug">{{ __('debug.lang_debug') }}</a>
+</blockquote>
+<a {{ !Route::has('voyager') ? 'class=disabled' : '' }} href="/admin">Voyager</a>
+<a {{ !Route::has('horizon') ? 'class=disabled' : '' }} href="/horizon">Horizon</a>
+<a {{ !Route::has('nova') ? 'class=disabled' : '' }} href="/nova"></a>
+<a {{ !Route::has('telescope') ? 'class=disabled' : '' }} href="/telescope">Telescope</a>
+<a {{ !Route::has('route:list') ? 'class=disabled' : '' }} href="/route:list">RouteList</a>
+<a {{ !Route::has('log-viewer.index') ? 'class=disabled' : '' }} href="/log-viewer">Log-View</a>
+<a {{ !Route::has('l5-swagger.default.api') ? 'class=disabled' : '' }} href="/api/documentation">Swagger</a>
+<a {{ !Route::has('l5-swagger.default.docs') ? 'class=disabled' : '' }} href="/docs/api-docs.json">Swagger-JSON</a>
+
+@if (Route::has('login'))
+    <a href="{{ route('login') }}">Login</a>
+@endif
+@if (Route::has('logout'))
+    <a href="{{ roue('login') }}">Logout</a>
+@endif
+@if (Route::has('register'))
+    <a href="{{ route('register') }}">Register</a>
+@endif
+@if (Route::has('password.email'))
+    <a href="/forgot-password">Register</a>
+@endif
+@if (Route::has('dashboard'))
+    <a href="{{ route('dashboard') }}">Dashboard</a>
+@endif
+<blockquote>
+</blockquote>
 <br>
 
-<a href="/index/test"> {{ __('debug.index') }} </a>
-<a href="/debug/scope">Scope</a>
+<a href="/debug/scope">user_all</a>
 <blockquote>
-    <a href="/debug/test"> {{ __('debug.test_debug') }} </a>
-    <a href="/person/adjust">{{ __('debug.test_action') }}</a>
-
-    <a href="/user/test"> {{ __('debug.test_user') }} </a>
-    <a href="/person/test"> {{ __('debug.test_person') }} </a>
+    <a href="/user/test">user_test</a>
+    <a href="/person/test">person_test</a>
+    <a href="/debug/test">debug_test</a>
 </blockquote>
 <blockquote>
     <a href="/info/user">user->Person</a>
@@ -48,11 +63,12 @@ class="disabled" @endif href="/telescope">Telescope</a>
 <blockquote>
     <a href="/debug/session">Current Session</a>
     <a href="/debug/sessions">Session Data</a>
-    <a href="/images">Image</a>
+
+    <a href="/images"><button @disabled(Route::has('images'))>Image</button></a>
 </blockquote>
 <blockquote>
-    <a href="/debug/status">Status Message</a>
-    <a href="/debug/error">Error Message</a>
+    <a href="/debug/status">withStatus</a>
+    <a href="/debug/error">withStatusError</a>
 </blockquote>
 <a href="/permission/role">RolePermission</a>
 <a href="/permission/user">UserPermission</a>

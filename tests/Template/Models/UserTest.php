@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Models;
+namespace Tests\Template\Models;
 
 use Request;
 use Tests\TestCase;
