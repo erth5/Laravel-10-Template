@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Template\Unit;
 
 use App\Rules\OddRule;
 use PHPUnit\Framework\TestCase;

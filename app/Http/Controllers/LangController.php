@@ -47,7 +47,7 @@ class LangController extends Controller
         // // Retrieving a list of protected locales.
         $protectedLocales = Locales::protects();
 
-        $testLocale = 'ru';
+        $testLocale = 'sp';
         $testLocaleavailible = Locales::isAvailable($testLocale);
 
         // // The checked locale protecting.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Template\Unit;
 
 use Tests\TestCase;
 use App\Models\Lang;

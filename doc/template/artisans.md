@@ -37,6 +37,7 @@ php artisan make:controller DebugController
 php artisan make:service UtilsService
 php artisan make:pivot langs people
 php artisan make:rule OddRule
+php artisan make:middleware LanguageManager
 ```
 
 ## Database commands

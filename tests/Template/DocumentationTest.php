@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Template;
 
 use Tests\TestCase;
 
-use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertTrue;
+use function PHPUnit\Framework\assertFalse;
 
 class DocumentationTest extends TestCase
 {

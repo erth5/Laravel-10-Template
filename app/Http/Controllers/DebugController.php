@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Person;
 use Illuminate\Http\Request;
 use App\Services\UtilsService;
 use Illuminate\Support\Facades\File;
@@ -38,6 +39,9 @@ class DebugController extends Controller
     {
         $url = Config::set('constants.info.url', 'http://example.de');
         switch ($name) {
+            case 'user':
+                $person = Person::find(1);
+                return view('debug.user');
             case 'test':
                 DebugController::test();
                 break;

@@ -31,14 +31,14 @@
 </li>
 @endforeach --}}
 
-    <h3>{{ __('debug.sessionLocale') }}
-        {{ session()->get('session.locale') }}
+    <h3>sessionLocale
+        {{ session()->get('locale') }}
     </h3>
     <h3>
-        {{ __('debug.appLocale') }}
+        appLocale
         {{ app()->getLocale() }}
     </h3>
-    <h3>{{ __('debug.configLocale') }}
+    <h3>configLocale
         {{ Config::get('app.locale') }}
     </h3>
 

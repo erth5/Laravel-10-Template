@@ -16,10 +16,10 @@
 <blockquote>
 
     <a href="/debug/config">configValidation</a>
-    <a href="/info/lang">Language</a>
 </blockquote>
 <blockquote>
-    <a href="/lang/lang_debug">{{ __('debug.lang_debug') }}</a>
+    <a href="/info/lang">Language</a>
+    <a href="/lang/lang_debug">Language Debug</a>
 </blockquote>
 <a {{ !Route::has('voyager') ? 'class=disabled' : '' }} href="/admin">Voyager</a>
 <a {{ !Route::has('horizon') ? 'class=disabled' : '' }} href="/horizon">Horizon</a>
@@ -61,8 +61,8 @@
     <a href="/info/name">Name</a>
 </blockquote>
 <blockquote>
-    <a href="/debug/session">Current Session</a>
-    <a href="/debug/sessions">Session Data</a>
+    <a href="/info/session">Current Session</a>
+    <a href="/info/sessions">Session Data</a>
 
     <a href="/images"><button @disabled(Route::has('images'))>Image</button></a>
 </blockquote>
