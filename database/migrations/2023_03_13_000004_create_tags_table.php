@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
-            $table->integer('reference_id');
-            $table->string('reference_table');
-            $table->string('name');
-            $table->boolean('propose');
+            $table->string('name')->nullable();
+            $table->boolean('propose')->default(false);
+            $table->integer('reference_id')->nullable();
+            $table->string('reference_table')->nullable();
             $table->timestamps();
         });
     }
