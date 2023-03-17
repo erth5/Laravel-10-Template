@@ -28,9 +28,10 @@ php artisan db:seed --class=UserSeeder
 ```
 
 ## Helper
+
 ```
-php artisan make:controller  LangController
-php artisan make:controller PermissionAndRoleController
+php artisan make:controller Helper/LangController
+php artisan make:controller Helper/PermissionAndRoleController
 php artisan make:migration create_permission_tables
 ```
 

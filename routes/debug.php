@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LangController;
 use App\Http\Controllers\Debug\UserController;
 use App\Http\Controllers\Debug\DebugController;
 use App\Http\Controllers\Debug\ImageController;
+use App\Http\Controllers\Helper\LangController;
 use App\Http\Controllers\Debug\PersonController;
-use App\Http\Controllers\PermissionAndRoleController;
+use App\Http\Controllers\Helper\PermissionAndRoleController;
 
 /*
 |--------------------------------------------------------------------------
