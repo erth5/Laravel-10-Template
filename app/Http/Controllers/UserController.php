@@ -8,6 +8,8 @@ use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use App\Services\UtilsService;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -37,7 +39,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
         $user = $this->utilsService->fillObjectFromRequest(new User, $request);
         $user->saveOrFail();
@@ -63,7 +65,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $user = $this->utilsService->fillObjectFromRequest($user, $request, false);
         $user->saveOrFail();
