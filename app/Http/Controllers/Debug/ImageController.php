@@ -6,12 +6,14 @@ use Exception;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use App\Services\ImageService;
-use Database\Seeders\ImageSeeder;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreImageRequest;
-use App\Http\Controllers\Modules\ImageValidatorModule;
+
+/**
+ * @deprecated
+ */
 
 class ImageController extends Controller
 {
@@ -26,13 +28,12 @@ class ImageController extends Controller
     /* variant1 */
     /**
      * Display a listing of the resource.
-     *
+     * performance: 1 querie->good
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $images = Image::withTrashed()->get();
-        // performance: 1 querie->good
         if ($images->isEmpty())
             return view('image.index');
         else
@@ -76,7 +77,7 @@ class ImageController extends Controller
             /* Pfad mit Namen und speichern*/
             // $path = $request->file('image')->storeAs('images', $name, 'public');
             /* Pfad ohne Namen */
-            $name = time() . $request->file('image')->hasName();
+            $name = time() . $request->file('image')->has('name');
             $request->file('image')->storeAs('images', $name, 'public');
             $metadata = Image::create();
             $metadata->name = $name;
@@ -101,7 +102,6 @@ class ImageController extends Controller
     {
         return view('/image.upload');
     }
-
 
     /**
      * Display the specified resource.
@@ -205,7 +205,7 @@ class ImageController extends Controller
     {
         $this->imageService->imageExist($request);
         $this->imageService->imageValid($request);
-        $name = $request->file('image')->hasName();
+        $name = $request->file('image')->has('name');
         $path = $request->file('image')->store('image');
 
         // SaveOrFail costumized
@@ -258,7 +258,10 @@ class ImageController extends Controller
 
         //copy Uploaded File
         $destinationPath = 'debugPath';
-        $req->copy($destinationPath, $req->hasName());
+        $req->copy(
+            $destinationPath,
+            $req->has('name')
+        );
 
         /* display self metadata */
         $path = 'debug';

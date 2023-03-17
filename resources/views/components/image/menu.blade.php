@@ -1,3 +1,5 @@
+<h1 style="color: red">@depricated</h1>
+
 <a href="/images">{{ __('image.index') }}</a>
 <blockquote><a href="/images/store"> {{ __('image.store') }} </a></blockquote>
 <a href="/images/create">{{ __('image.create') }}</a>

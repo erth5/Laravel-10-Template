@@ -22,7 +22,7 @@ class ImageService
     public function imageValid(Request $request)
     {
         $validatedImage = $request->validate([
-            'image' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'image' => 'image|mimes:jpg,png,jpeg,gif,svg,bmp,application/pdf|max:2048',
         ]);
         return $validatedImage;
     }

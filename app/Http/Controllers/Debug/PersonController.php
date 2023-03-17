@@ -11,12 +11,12 @@ class PersonController extends Controller
 {
     public function test($id = 1)
     {
-        /** need pagination, performance: 2 queries->bad */
-        if (Person::count() == 0)
-            return view('debug.user');
-        else
-            $people = Person::all();
-        return view('debug.user', compact('people'));
+        // /** need pagination, performance: 2 queries->bad */
+        // if (Person::count() == 0)
+        //     return view('debug.user');
+        // else
+        //     $people = Person::all();
+        // return view('debug.user', compact('people'));
 
         /** works */
         // $view = Person::view();
