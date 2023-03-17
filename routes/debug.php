@@ -1,12 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TagController;
 use App\Http\Controllers\LangController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\DebugController;
-use App\Http\Controllers\ImageController;
-use App\Http\Controllers\PersonController;
+use App\Http\Controllers\Debug\UserController;
+use App\Http\Controllers\Debug\DebugController;
+use App\Http\Controllers\Debug\ImageController;
+use App\Http\Controllers\Debug\PersonController;
 use App\Http\Controllers\PermissionAndRoleController;
 
 /*
@@ -14,7 +13,7 @@ use App\Http\Controllers\PermissionAndRoleController;
 | Web Routes Debug
 |--------------------------------------------------------------------------
 |
-| This routes file registered some routes, which help you analyse
+| This routes file register some routes, which help you analyse
 | your Laravel Environement. By disabling DEBUG Mode in env file,
 | this routes will be deactivated
 |
@@ -42,14 +41,12 @@ Route::controller(PermissionAndRoleController::class)->group(function () {
     Route::match(array('GET', 'POST'), '/permission/user', 'user')->name('editUserPermissions');
 });
 
-Route::resource('users', UserController::class)->only('exportExcel', 'exportCSV');
-Route::controller(UserController::class)->group(function () {
-    Route::get('user/test', [UserController::class, 'test']);
-});
-
-Route::resource('people', PersonController::class)->only('index', 'destroy');
 Route::controller(PersonController::class)->group(function () {
     Route::get('/person/test', 'test');
+});
+
+Route::controller(UserController::class)->group(function () {
+    Route::get('/user/test', [UserController::class, 'test']);
 });
 
 Route::controller(ImageController::class)->group(function () {
@@ -71,8 +68,6 @@ Route::controller(LangController::class)->group(function () {
     Route::get('/lang/lang_debug', 'debug');
     Route::get('/lang/change', 'change')->name('langChange');
 });
-
-Route::resource('tags', TagController::class)->only('list');
 
 // Route::get('{alias}', 'HomeController@someAction')
 //     ->where('alias', 'alias1|alias1.html|alias1.php|alias4');

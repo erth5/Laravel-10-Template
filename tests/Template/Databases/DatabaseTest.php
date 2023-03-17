@@ -5,12 +5,13 @@ namespace Tests\Template\Databases;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Person;
+use App\Actions\AdjustPerson;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\PersonSeeder;
 use Illuminate\Support\Facades\DB;
 
-use App\Http\Controllers\PersonController;
 use function PHPUnit\Framework\assertEquals;
+use App\Http\Controllers\Debug\PersonController;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -98,7 +99,7 @@ class DatabaseTest extends TestCase
         if (DB::table('people')->count() == 0) {
             $this->seed('PersonSeeder');
         }
-        $adjusting = (new PersonController)->adjust();
+        $adjusting = (new AdjustPerson)->handle();
         assertEquals(
             'Lord Kennedy',
             Person::where('username', 'thespasst')

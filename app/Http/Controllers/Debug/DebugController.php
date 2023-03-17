@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Debug;
 
 use App\Models\User;
 use App\Models\Person;
 use Illuminate\Http\Request;
 use App\Services\UtilsService;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
@@ -143,8 +144,8 @@ class DebugController extends Controller
     public function test()
     {
         /** not works */
-        // $test = Person::username();
-        // dd($test);
+        $test = Person::username();
+        dd($test);
 
         /** works */
         // $columns = ['id', 'user_id', 'surname', 'last_name', 'username', 'created_at', 'updated_at'];
@@ -161,8 +162,8 @@ class DebugController extends Controller
         // $coloumschecker = $this->utilsService->proofDatabaseFields(Person::class, $columns);
         // dd($coloumschecker);
 
-        /** works - alles beinhaltet "nix" */
-        // $irgendwas = $etwas = $sonstwas = "nix";
-        // dd($irgendwas, $etwas, $sonstwas);
+        /** works */
+        // $anything = $some = $elsewhatsoever = "nothing";
+        // dd($anything, $some, $elsewhatsoever);
     }
 }

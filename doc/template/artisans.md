@@ -9,6 +9,16 @@ php artisan make:model Person -a
 php artisan make:model Tag -a
 ```
 
+## Eloquent Debug
+
+```terminal
+php artisan make:controller  Debug/DebugController
+php artisan make:controller  Debug/ImageController --resource
+php artisan make:controller  Helper/LangController !!!!!!!!!!
+php artisan make:controller  Debug/PersonController
+php artisan make:controller  Debug/UserController
+```
+
 ## User
 
 ```terminal
@@ -38,6 +48,12 @@ php artisan make:service UtilsService
 php artisan make:pivot langs people
 php artisan make:rule OddRule
 php artisan make:middleware LanguageManager
+```
+
+## Action from Laravel Actions
+
+```terminal
+php artisan make:action AdjustPerson
 ```
 
 ## Database commands
