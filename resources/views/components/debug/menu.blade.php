@@ -22,11 +22,13 @@
     <a href="/lang/lang_debug">Language Debug</a>
 </blockquote>
 <a {{ !Route::has('voyager') ? 'class=disabled' : '' }} href="/admin">Voyager</a>
+<a {{ !Route::has('nova') ? 'class=disabled' : '' }} href="/nova">Nova</a>
+<blockquote></blockquote>
 <a {{ !Route::has('horizon') ? 'class=disabled' : '' }} href="/horizon">Horizon</a>
-<a {{ !Route::has('nova') ? 'class=disabled' : '' }} href="/nova"></a>
 <a {{ !Route::has('telescope') ? 'class=disabled' : '' }} href="/telescope">Telescope</a>
 <a {{ !Route::has('route:list') ? 'class=disabled' : '' }} href="/route:list">RouteList</a>
 <a {{ !Route::has('log-viewer.index') ? 'class=disabled' : '' }} href="/log-viewer">Log-View</a>
+<blockquote></blockquote>
 <a {{ !Route::has('l5-swagger.default.api') ? 'class=disabled' : '' }} href="/api/documentation">Swagger</a>
 <a {{ !Route::has('l5-swagger.default.docs') ? 'class=disabled' : '' }} href="/docs/api-docs.json">Swagger-JSON</a>
 

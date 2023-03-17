@@ -11,7 +11,7 @@ class PersonController extends Controller
 {
     public function test($id = 1)
     {
-        /* performance: 2 queries->bad */
+        /** need pagination, performance: 2 queries->bad */
         if (Person::count() == 0)
             return view('debug.user');
         else

@@ -18,7 +18,7 @@ class UserController extends Controller
             return view('debug.person', compact('users'));
         }
 
-        /** works with auth */
+        /** need auth */
         // $dbUser = User::where('name', 'Max Mustermann')->first();
         // $helperUser = Auth::user();
         // $authUser = auth()->user();

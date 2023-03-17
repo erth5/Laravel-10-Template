@@ -143,9 +143,9 @@ class DebugController extends Controller
 
     public function test()
     {
-        /** not works */
-        $test = Person::username();
-        dd($test);
+        /** works */
+        // $test = Person::username();
+        // dd($test);
 
         /** works */
         // $columns = ['id', 'user_id', 'surname', 'last_name', 'username', 'created_at', 'updated_at'];

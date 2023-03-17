@@ -16,10 +16,9 @@ class Person extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'surname',
-        //Spell-checked:Last Name will be written with blank line
-        'last_name',
         'username',
+        'surname',
+        'last_name',
     ];
 
     /**
@@ -35,7 +34,6 @@ class Person extends Model
         // but it's safer to just get the fillable fields
 
         $attributes = $this->getAttributes();
-
         foreach ($columns as $column) {
             if (!array_key_exists($column, $attributes)) {
                 $attributes[$column] = null;
@@ -122,7 +120,7 @@ class Person extends Model
         return $this->hasMany(Image::class);
     }
 
-    /** Example Function to get a value as method */
+    /** Get a value as method */
     public static function username()
     {
         return Person::select('username')->get();

@@ -17,13 +17,11 @@ use App\Http\Controllers\PermissionAndRoleController;
 | your Laravel Environement. By disabling DEBUG Mode in env file,
 | this routes will be deactivated
 |
+| possible issues:
+| routes at top overrides Routes at buttom in this file
+| ressource has exact predefined and indirect routes
+|
 */
-
-/**
- * possible issues:
- * routes at top overrides Routes at buttom in this file
- * ressource has exact predefined and indirect routes
- */
 
 Route::get('hello world', function () {
     echo 'hello World';

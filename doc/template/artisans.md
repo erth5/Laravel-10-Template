@@ -14,7 +14,6 @@ php artisan make:model Tag -a
 ```terminal
 php artisan make:controller  Debug/DebugController
 php artisan make:controller  Debug/ImageController --resource
-php artisan make:controller  Helper/LangController !!!!!!!!!!
 php artisan make:controller  Debug/PersonController
 php artisan make:controller  Debug/UserController
 ```
@@ -28,8 +27,9 @@ php artisan make:controller UserController --resource
 php artisan db:seed --class=UserSeeder
 ```
 
-## Permissions
+## Helper
 ```
+php artisan make:controller  LangController
 php artisan make:controller PermissionAndRoleController
 php artisan make:migration create_permission_tables
 ```

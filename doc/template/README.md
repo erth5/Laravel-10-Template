@@ -25,8 +25,11 @@ run
 ```artisan
 php artisan storage:link
 ```
+(will automaticly run by jetstream installation)
 
-copy env.example to .env, generate your app-key
+copy env.example to .env,
+
+generate your app-key
 
 ## Documentation
 
