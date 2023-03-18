@@ -20,6 +20,7 @@
         "lorisleiva/laravel-actions": "^2.5",
         "maatwebsite/excel": "^3.1",
         "opcodesio/log-viewer": "^2.1",
+        "spatie/laravel-backup": "^8.1",
         "spatie/laravel-permission": "^5.9",
         "spatie/laravel-translatable": "^6.3",
         "timwassenburg/laravel-pivot-table-generator": "^1.0",
@@ -27,6 +28,7 @@
     },
     "require-dev": {
         "apih/laravel-route-list-web": "^1.1",
+        "barryvdh/laravel-ide-helper": "^2.13",
         "fakerphp/faker": "^1.9.1",
         "laravel-lang/attributes": "^2.3",
         "laravel-lang/common": "^3.1",

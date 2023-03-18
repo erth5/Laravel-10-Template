@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ use App\Http\Requests\UpdateUserRequest;
 class UserController extends Controller
 {
     protected $utilsService;
+
     public function __construct(
         UtilsService $utilsService
     ) {
@@ -69,6 +71,7 @@ class UserController extends Controller
     {
         $user = $this->utilsService->fillObjectFromRequest($user, $request, false);
         $user->saveOrFail();
+
         return redirect()->route('users.index');
     }
 
@@ -78,6 +81,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->forceDelete();
+
         return redirect()->route('users.index');
     }
 
@@ -85,6 +89,7 @@ class UserController extends Controller
     {
         return Excel::download(new UsersExport, 'users.xlsx');
     }
+
     public function exportCSV()
     {
         return Excel::download(new UsersExport, 'users.csv');

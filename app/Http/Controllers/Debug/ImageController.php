@@ -14,7 +14,6 @@ use App\Http\Requests\StoreImageRequest;
 /**
  * @deprecated
  */
-
 class ImageController extends Controller
 {
 
