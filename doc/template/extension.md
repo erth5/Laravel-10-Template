@@ -12,8 +12,6 @@
 
 <https://github.com/spatie/laravel-permission>
 
-<https://github.com/getsolaris/laravel-make-service-command>
-
 <https://laravel-news.com/config-validator>
 
 <https://github.com/laravel/pint>
@@ -25,6 +23,12 @@
 <https://editor.swagger.io>
 
 <https://support.smartbear.com/swaggerhub/docs/tutorials/openapi-3-tutorial.html>
+
+## Tool
+
+https://github.com/timwassenburg/laravel-pivot-table-generator
+
+https://github.com/timwassenburg/laravel-service-generator
 
 ## Visual
 
@@ -38,7 +42,7 @@
 
 <https://github.com/spatie/laravel-translatable>
 
-## (not installed because above are integrated)
+## (not installed because above are used)
 
 <https://laraveli18n.kodilab.com/docs/installation/>
 
@@ -54,7 +58,16 @@
 
 <https://spatie.be/docs/laravel-site-search/v1/introduction>
 
-## this dependencies are not installed
+## LDAP
+
+<https://ldaprecord.com>
+<https://ldaprecord.com/docs/laravel/v2/auth/sso>
+
+## GraphQL
+
+<https://github.com/nuwave/lighthouse>
+
+## not installed
 
 <https://github.com/CrestApps/laravel-code-generator>
 

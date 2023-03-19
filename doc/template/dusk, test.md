@@ -1,6 +1,9 @@
 # testing
 
-<https://laravel.com/docs/9.x/dusk>
+https://laravel.com/docs/10.x/dusk#main-content
+
+## url
+.env url needs correct port, by localhost: localhost:8000
 
 php artisan dusk:chrome-driver
 

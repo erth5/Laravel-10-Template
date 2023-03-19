@@ -2,40 +2,45 @@
 
 namespace Tests\Template;
 
-use Tests\TestCase;
-
-use function PHPUnit\Framework\assertTrue;
+use Illuminate\Support\Facades\Route;
 use function PHPUnit\Framework\assertFalse;
+use Tests\TestCase;
 
 class DocumentationTest extends TestCase
 {
     /**
      * Verbindet sich zur Hauptseite der Swagger Instanz
+     *
      * @group specification
+     *
      * @return void
      */
     public function test_swagger_integration_response()
     {
         /* Alternativ hätte man auch mit ignore arbeiten können */
-        if (env('Swagger') == true) {
-            echo env('APP_URL') . "/api/documentation";
+        if (Route::has('l5-swagger.default.api')) {
+            echo env('APP_URL').'/api/documentation';
             $swagger = $this->get('/api/documentation');
             $swagger->assertStatus(200);
-        } else
-            assertTrue(true);
+        } else {
+            assertFalse(false);
+        }
     }
 
     /**
-     * Testet, ob der Swagger eine Valide JSON zurück gibt
+     * Testet, ob der Swagger JSON Response erfolgt
+     *
      * @group specification
+     *
      * @return void
      */
     public function test_swagger_integration_works()
     {
-        if (env('Swagger') == true) {
+        if (Route::has('l5-swagger.default.api')) {
             $swagger = $this->get('/docs/api-docs.json');
             $swagger->assertStatus(200);
-        } else
-            assertTrue(true);
+        } else {
+            assertFalse(false);
+        }
     }
 }

@@ -3,13 +3,13 @@
 namespace Tests\Template;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LangTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * Test language Change works
+     *
+     * @group specification
      */
     public function test_example(): void
     {

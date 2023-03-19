@@ -8,8 +8,7 @@ use PHPUnit\Framework\TestCase;
 class RuleTest extends TestCase
 {
     /**
-     * A basic unit test example.
-     * @group specification
+     * Test OddRule works
      * @return void
      */
     public function test_example()
