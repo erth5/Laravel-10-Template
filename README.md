@@ -1,4 +1,4 @@
-[Laravel-Template Documentation](doc/template/Readme.md)
+[Laravel-Template Documentation](doc/template/README.md)
 
 # Your Projectname
 

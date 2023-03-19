@@ -31,18 +31,18 @@
 <blockquote></blockquote>
 <a {{ !Route::has('l5-swagger.default.api') ? 'class=disabled' : '' }} href="/api/documentation">Swagger</a>
 <a {{ !Route::has('l5-swagger.default.docs') ? 'class=disabled' : '' }} href="/docs/api-docs.json">Swagger-JSON</a>
-
+<blockquote></blockquote>
 @if (Route::has('login'))
     <a href="{{ route('login') }}">Login</a>
 @endif
 @if (Route::has('logout'))
-    <a href="{{ roue('login') }}">Logout</a>
+    <a href="{{ route('logout') }}">Logout</a>
 @endif
 @if (Route::has('register'))
     <a href="{{ route('register') }}">Register</a>
 @endif
 @if (Route::has('password.email'))
-    <a href="/forgot-password">Register</a>
+    <a href="/forgot-password">Forgot Passwort</a>
 @endif
 @if (Route::has('dashboard'))
     <a href="{{ route('dashboard') }}">Dashboard</a>
