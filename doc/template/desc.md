@@ -153,7 +153,7 @@ return $this->hasOne(Phone::class, 'foreign_key', 'local_key');
     <button type="submit" value="image">update</button>
 </form>
 
-
+# Image Upload Route
 
 <form action="{{ route('image/' . image->id) }}"method="PUT" enctype="multipart/form-data">
 @csrf
