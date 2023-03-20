@@ -67,6 +67,8 @@ php artisan migrate:reset
 php artisan db:wipe --force
 ```
 
+## auto by jetstream
+
 ```terminal
 php artisan session:table
 ```
