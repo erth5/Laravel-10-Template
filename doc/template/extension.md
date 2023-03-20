@@ -69,7 +69,9 @@ https://github.com/timwassenburg/laravel-service-generator
 
 ## not installed
 
-<https://github.com/CrestApps/laravel-code-generator>
+https://github.com/laravel/passport
+
+https://github.com/getsentry/sentry-laravel
 
 <https://laravel-news.com/bash-aliases>
 
