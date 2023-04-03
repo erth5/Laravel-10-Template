@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Request as SupportRequest;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Request as SupportRequest;
 
 /**
  * Class UtilsService.
@@ -71,7 +71,11 @@ class UtilsService
         }
 
         if ($data instanceof Model || is_object($data)) {
-            $data = $data->getAttributes();
+            // $data = $data->getAttributes();
+            foreach ($data->getAttributes() as $key => $value) {
+                $object->{$key} = $value;
+            }
+            return $object;
         } elseif (gettype($data) instanceof Request) {
             // gettype($data) instanceof SupportRequest not supportet
             $object = $this->fillObjectFromRequest($object, $data);
@@ -176,7 +180,7 @@ class UtilsService
         return $tableColumns;
     }
 
-    private function getDbBooleanColumns($database)
+    private function getDbBooleanColumns(string $database)
     {
         $tableColumns = [];
         $booleans = Schema::getColumnListing($database);
@@ -218,7 +222,7 @@ class UtilsService
      */
     public function proofDatabaseFields($modelClass, $columns)
     {
-        $fillable = new $modelClass;
+        $fillable = new $modelClass();
         $currentColumns = $fillable->getFillable();
         foreach ($columns as $column) {
             if (! in_array($column, $currentColumns)) {

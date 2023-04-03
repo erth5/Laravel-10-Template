@@ -19,6 +19,7 @@ class ResourceRegistrar extends BaseResourceRegistrar
         'importExcel',
         'exportCSV',
         'exportExcel',
+        'truncate',
     ];
 
     /**
@@ -76,6 +77,13 @@ class ResourceRegistrar extends BaseResourceRegistrar
     {
         $uri = $this->getResourceUri($name) . '/export/excel';
         $action = $this->getResourceAction($name, $controller, 'exportExcel', $options);
+        return $this->router->get($uri, $action);
+    }
+
+    public function addResourceTruncate($name, $base, $controller, $options)
+    {
+        $uri = $this->getResourceUri($name) . '/truncate';
+        $action = $this->getResourceAction($name, $controller, 'truncate', $options);
         return $this->router->get($uri, $action);
     }
 }
