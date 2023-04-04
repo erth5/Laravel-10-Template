@@ -62,6 +62,13 @@ class UtilsService
          */
     }
 
+    /**
+     * Füllt beliebiges Objekt mit beliebigen Daten,
+     * bei denen die Keys übereinstimmen
+     * @param [type] $object
+     * @param [type] $data
+     * @return object
+     */
     public function fillObjectRecursiv($object, $data)
     {
         if (! $this->databaseName) {
@@ -115,6 +122,9 @@ class UtilsService
         $databaseName = strtolower(Str::plural(class_basename($object), 2));
         $tableColumnNames = $this->getDbColumnsWithoutBoolean($databaseName);
         $checkboxtableColumnNames = $this->getDbBooleanColumns($databaseName);
+
+        Log::debug('fillObjectFromRequest action to Object: ' . $object . 'starts');
+
         if (isset($tableColumnNames)) {
             foreach ($tableColumnNames as $columnName) {
                 if ($req->has($columnName)) {
@@ -123,6 +133,7 @@ class UtilsService
                             Log::debug('Update DB Column '.$columnName.
                             ' from '.$object->{$columnName}.
                             ' to '.$req->{$columnName});
+
                             $object->{$columnName} = $req->{$columnName};
                         }
                     }
@@ -132,6 +143,11 @@ class UtilsService
 
         if (isset($checkboxtableColumnNames)) {
             foreach ($checkboxtableColumnNames as $checkboxColumnName) {
+                Log::debug('Update DB Checkbox Column '.$checkboxColumnName.
+                            ' from '.$object->{$checkboxColumnName} ?? 'false'.
+                            ' to '.$req->{$checkboxColumnName}) == 'false';
+
+                /* Checkboxen geben Keys nur zurück, wenn sie angekreutzt wurden */
                 $req->has($checkboxColumnName) ? $object->{$checkboxColumnName} = true : $object->{$checkboxColumnName} = false;
             }
         }
@@ -194,19 +210,15 @@ class UtilsService
     }
 
     /**
-     * Prüft alle Datenbankfelder
+     * Lasse prüfen, ob eine Datenbanktabelle, die angegebenen Spalten besitzt
      *
-     * @param Database string  $databaseName Name der Datenbank
-     * @param  array  $columns erwartete Datenbank-Spalten-Namen
+     * @param string $databaseName Name der Datenbank
+     * @param array $columns erwartete Datenbank-Spalten-Namen
+     * @return boolean Alle Spalten existieren oder nicht
      */
-    public function proofAllDatabaseFields(string $databaseName, $columns)
+    public function databaseHasColumns(string $databaseName, array $columns)
     {
         $currentColumns = Schema::getColumnListing($databaseName);
-        foreach ($columns as $column) {
-            if (! in_array($column, $currentColumns)) {
-                return false;
-            }
-        }
         foreach ($currentColumns as $currentColumn) {
             if (! in_array($currentColumn, $columns)) {
                 return false;
@@ -217,13 +229,45 @@ class UtilsService
     }
 
     /**
+     * Lasse prüfen, ob die angegebenen Spalten in der Datenbank vorhanden sind
+     *
+     * @param string $databaseName Name der Datenbank
+     * @param array $columns erwartete Datenbank-Spalten-Namen
+     * @return boolean Alle sind enthalten oder nicht
+     */
+    public function columnsInDatabase(string $databaseName, array $columns)
+    {
+        $currentColumns = Schema::getColumnListing($databaseName);
+        foreach ($columns as $column) {
+            if (! in_array($column, $currentColumns)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Gibt alle ausfüllbaren keys eines Models zurück
+     *
+     * @param string $modelClass
+     * @return array $fillable
+     */
+    public function getFillableKeys(string $modelClass){
+        $objectInstance = new $modelClass();
+        return $objectInstance->getFillable();
+    }
+
+    /**
+     * Prüft, ob ein Model mit genau einer Reihe an Keys gefüllt werden kann
      * @param  class-string  $model \Illuminate\Database\Eloquent\Model
      * @param  array  $columns erwartete Datenbank-Spalten-Namen
+     * @return boolean Beinhaltet genau diese Keys oder nicht
      */
-    public function proofDatabaseFields($modelClass, $columns)
+    public function proofDatabaseFields(string $modelClass, array $columns)
     {
-        $fillable = new $modelClass();
-        $currentColumns = $fillable->getFillable();
+        $objectInstance = new $modelClass();
+        $currentColumns = $objectInstance->getFillable();
         foreach ($columns as $column) {
             if (! in_array($column, $currentColumns)) {
                 return false;

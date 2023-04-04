@@ -32,6 +32,9 @@ Route::controller(ItemController::class)->group(function () {
 ## Auth
 
 ```php
+
+$token = request()->bearerToken();
+
 /* Current Login User Details */
 $user = auth()->user();
 var_dump($user);

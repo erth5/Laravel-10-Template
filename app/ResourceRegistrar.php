@@ -82,7 +82,7 @@ class ResourceRegistrar extends BaseResourceRegistrar
 
     public function addResourceTruncate($name, $base, $controller, $options)
     {
-        $uri = $this->getResourceUri($name) . '/truncate';
+        $uri = $this->getResourceUri($name) . '/table/truncate';
         $action = $this->getResourceAction($name, $controller, 'truncate', $options);
         return $this->router->get($uri, $action);
     }

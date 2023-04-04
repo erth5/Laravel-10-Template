@@ -149,7 +149,7 @@ class DebugController extends Controller
 
         /** works */
         // $columns = ['id', 'user_id', 'surname', 'last_name', 'username', 'created_at', 'updated_at'];
-        // $coloumschecker = $this->utilsService->proofAllDatabaseFields('people', $columns);
+        // $coloumschecker = $this->utilsService->databaseHasColumns('people', $columns);
         // dd($coloumschecker);
 
         /** works */
@@ -160,6 +160,10 @@ class DebugController extends Controller
         /** works */
         // $columns = ['surname', 'last_name', 'username'];
         // $coloumschecker = $this->utilsService->proofDatabaseFields(Person::class, $columns);
+        // dd($coloumschecker);
+
+        /** works */
+        // $coloumschecker = $this->utilsService->getFillableKeys(Person::class);
         // dd($coloumschecker);
 
         /** works */
