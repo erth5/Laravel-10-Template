@@ -7,32 +7,30 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UtilsService;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Request as SupportRequest;
 
 class UtilsTest extends TestCase
 {
     use WithFaker;
+
     public $userArray = [
         'name' => 'Jane',
         'email' => 'uil22093@omeie.com',
         'password' => '7mZ7bc@JRubyq$',
     ];
+
     public $stackedUserArray = [
         'name' => 'Jane',
         'more' => [
             'email' => 'uil22093@omeie.com',
-            'password' => '7mZ7bc@JRubyq$'
+            'password' => '7mZ7bc@JRubyq$',
         ],
         'invalid' => [
             'data',
-        ]
+        ],
     ];
 
     /**
      * Teste
-     *
-     * @return void
      */
     public function test_validateRequest(): void
     {
@@ -58,8 +56,6 @@ class UtilsTest extends TestCase
 
     /**
      * Teste das füllen eines Modells aus einem Request
-     *
-     * @return void
      */
     public function test_fillObjectFromRequest(): void
     {
@@ -81,6 +77,7 @@ class UtilsTest extends TestCase
      */
     public function test_fillObject(): void
     {
+
         $data = new User([
             'name' => 'Jane',
             'email' => 'uil22093@omeie.com',

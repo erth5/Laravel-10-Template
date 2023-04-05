@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request as SupportRequest;
 
+// gettype($data) instanceof SupportRequest not supportet
+
 /**
  * Class UtilsService.
  */
@@ -25,8 +27,8 @@ class UtilsService
      * prüft, ob das Objekt Request den angegebenen Regeln entspricht
      *
      * @param request req request
-     * @param validationRules associative array Array mit Validierungsregeln: https://laravel.com/docs/10.x/validation#manually-creating-validators
-     * @param validationErrorMessage string Fehlermeldung wenn Validierung mit Fehler abbricht
+     * @param $validationRules associative array Array mit Validierungsregeln: https://laravel.com/docs/10.x/validation#manually-creating-validators
+     * @param $validationErrorMessage string Fehlermeldung wenn Validierung mit Fehler abbricht
      * */
     public function validateRequest($req, $validationRules)
     {
@@ -48,29 +50,6 @@ class UtilsService
      */
     public function fillObject($object, $data)
     {
-        $object = $this->fillObjectRecursiv($object, $data);
-
-        return $object;
-    }
-
-    public function fillObjectIterativ($object, $data)
-    {
-        /** ChatGPT
-         * $childObject = $currentObject->{$key} ?? null;
-         *  Call to undefined method App\Models\User::more()
-         *  -> Es darf nicht key durchgereicht werden, sonden immer value
-         */
-    }
-
-    /**
-     * Füllt beliebiges Objekt mit beliebigen Daten,
-     * bei denen die Keys übereinstimmen
-     * @param [type] $object
-     * @param [type] $data
-     * @return object
-     */
-    public function fillObjectRecursiv($object, $data)
-    {
         if (! $this->databaseName) {
             $this->databaseName = strtolower(Str::plural(class_basename($object), 2));
             $this->tableColumnNames = $this->getDbColumnsWithoutBoolean($this->databaseName);
@@ -78,18 +57,46 @@ class UtilsService
         }
 
         if ($data instanceof Model || is_object($data)) {
-            // $data = $data->getAttributes();
             foreach ($data->getAttributes() as $key => $value) {
                 $object->{$key} = $value;
             }
+
             return $object;
         } elseif (gettype($data) instanceof Request) {
-            // gettype($data) instanceof SupportRequest not supportet
             $object = $this->fillObjectFromRequest($object, $data);
 
             return $object;
         }
 
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $object = $this->fillObjectRecursiv($object, $value);
+
+                continue;
+            }
+
+            if (is_scalar($value)) {
+                if (in_array($key, $this->tableColumnNames) || in_array($key, $this->checkboxtableColumnNames)) {
+                    $object->{$key} = $value;
+                }
+            } else {
+                Log::debug('the key '.$key.' with value '.$value.' not found in '.get_class($object));
+            }
+        }
+
+        return $object;
+    }
+
+    /**
+     * Füllt ein Model mit Daten aus einem Array,
+     * bei denen die Keys übereinstimmen
+     *
+     * @param [type] $object
+     * @param [type] $data
+     * @return object
+     */
+    public function fillObjectRecursiv($object, $data)
+    {
         foreach ($data as $key => $value) {
             if (is_array($value)) {
                 $object = $this->fillObjectRecursiv($object, $value);
@@ -123,7 +130,7 @@ class UtilsService
         $tableColumnNames = $this->getDbColumnsWithoutBoolean($databaseName);
         $checkboxtableColumnNames = $this->getDbBooleanColumns($databaseName);
 
-        Log::debug('fillObjectFromRequest action to Object: ' . $object . 'starts');
+        Log::debug('fillObjectFromRequest action to Object: '.$object.'starts');
 
         if (isset($tableColumnNames)) {
             foreach ($tableColumnNames as $columnName) {
@@ -212,9 +219,9 @@ class UtilsService
     /**
      * Lasse prüfen, ob eine Datenbanktabelle, die angegebenen Spalten besitzt
      *
-     * @param string $databaseName Name der Datenbank
-     * @param array $columns erwartete Datenbank-Spalten-Namen
-     * @return boolean Alle Spalten existieren oder nicht
+     * @param  string  $databaseName Name der Datenbank
+     * @param  array  $columns erwartete Datenbank-Spalten-Namen
+     * @return bool Alle Spalten existieren oder nicht
      */
     public function databaseHasColumns(string $databaseName, array $columns)
     {
@@ -231,9 +238,9 @@ class UtilsService
     /**
      * Lasse prüfen, ob die angegebenen Spalten in der Datenbank vorhanden sind
      *
-     * @param string $databaseName Name der Datenbank
-     * @param array $columns erwartete Datenbank-Spalten-Namen
-     * @return boolean Alle sind enthalten oder nicht
+     * @param  string  $databaseName Name der Datenbank
+     * @param  array  $columns erwartete Datenbank-Spalten-Namen
+     * @return bool Alle sind enthalten oder nicht
      */
     public function columnsInDatabase(string $databaseName, array $columns)
     {
@@ -250,19 +257,21 @@ class UtilsService
     /**
      * Gibt alle ausfüllbaren keys eines Models zurück
      *
-     * @param string $modelClass
      * @return array $fillable
      */
-    public function getFillableKeys(string $modelClass){
+    public function getFillableKeys(string $modelClass)
+    {
         $objectInstance = new $modelClass();
+
         return $objectInstance->getFillable();
     }
 
     /**
      * Prüft, ob ein Model mit genau einer Reihe an Keys gefüllt werden kann
+     *
      * @param  class-string  $model \Illuminate\Database\Eloquent\Model
      * @param  array  $columns erwartete Datenbank-Spalten-Namen
-     * @return boolean Beinhaltet genau diese Keys oder nicht
+     * @return bool Beinhaltet genau diese Keys oder nicht
      */
     public function proofDatabaseFields(string $modelClass, array $columns)
     {
