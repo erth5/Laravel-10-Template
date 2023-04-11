@@ -65,7 +65,7 @@ class UtilsTest extends TestCase
         $user = new User();
         /* call the function to populate the object with values from the array */
         $utilsService = new UtilsService;
-        $user = $utilsService->fillObjectFromRequest($user, $request);
+        $user = $utilsService->fillObjectFromRequest($user, $request, withNullValues:false);
         /* assert that the object was correctly populated with values from the array */
         $this->assertEquals('Jane', $user->name);
         $this->assertEquals('uil22093@omeie.com', $user->email);
