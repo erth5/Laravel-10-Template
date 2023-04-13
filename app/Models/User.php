@@ -11,12 +11,13 @@ use App\Models\Scopes\SoftDeletesScope;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use LaracraftTech\LaravelDateScopes\DateScopes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, SoftDeletes, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, SoftDeletes, HasFactory, Notifiable, HasRoles, DateScopes;
 
     /**
      * The attributes that are mass assignable.
