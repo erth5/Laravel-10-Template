@@ -7,6 +7,8 @@
     "devDependencies": {
         "axios": "^1.1.2",
         "laravel-vite-plugin": "^0.7.2",
+        "ts-loader": "^9.4.2",
+        "typescript": "^5.0.4",
         "vite": "^4.0.0"
     }
 }
