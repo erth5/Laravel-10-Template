@@ -15,7 +15,7 @@ var observer = new IntersectionObserver((entries) => {
     {
         root: null,
         rootMargin: '0px',
-        thresold: 0.1,
+        threshold: 0.1,
     }
 );
 
