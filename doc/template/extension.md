@@ -26,9 +26,9 @@
 
 ## Tool
 
-https://github.com/timwassenburg/laravel-pivot-table-generator
+<https://github.com/timwassenburg/laravel-pivot-table-generator>
 
-https://github.com/timwassenburg/laravel-service-generator
+<https://github.com/timwassenburg/laravel-service-generator>
 
 ## Visual
 
@@ -69,9 +69,9 @@ https://github.com/timwassenburg/laravel-service-generator
 
 ## not installed
 
-https://github.com/laravel/passport
+<https://github.com/laravel/passport>
 
-https://github.com/getsentry/sentry-laravel
+<https://github.com/getsentry/sentry-laravel>
 
 <https://laravel-news.com/bash-aliases>
 
