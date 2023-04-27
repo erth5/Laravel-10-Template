@@ -290,4 +290,28 @@ class UtilsService
 
         return true;
     }
+
+    /**
+     * Überprüft, ob der aktuelle Code innerhalb eines Docker-Containers ausgeführt wird.
+     *
+     * @param string|null $cgroup Die `cgroups`-Hierarchie als Text. Standardmäßig wird die Datei `/proc/self/cgroup` verwendet.
+     *
+     * @return bool Gibt true zurück, wenn der Code innerhalb eines Docker-Containers ausgeführt wird, andernfalls false.
+     */
+    private function dockerized(?string $cgroup = null): bool
+    {
+        if (file_exists('/.dockerenv')) { // docker
+            return true;
+        }
+
+        if (!$cgroup) {
+            if (file_exists('/proc/self/cgroup')) {
+                $cgroup = file_get_contents('/proc/self/cgroup'); // linux
+            } else {
+                return false; // windows
+            }
+        }
+
+        return (bool) preg_match('/\bdocker\b/i', $cgroup);
+    }
 }
