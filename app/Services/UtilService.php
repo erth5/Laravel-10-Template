@@ -298,7 +298,7 @@ class UtilService
      *
      * @return bool Gibt true zurück, wenn der Code innerhalb eines Docker-Containers ausgeführt wird, andernfalls false.
      */
-    private function dockerized(?string $cgroup = null): bool
+    public function dockerized(?string $cgroup = null): bool
     {
         if (file_exists('/.dockerenv')) { // docker
             return true;
