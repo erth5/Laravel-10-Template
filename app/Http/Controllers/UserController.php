@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
-use App\Services\UtilsService;
+use App\Services\UtilService;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreUserRequest;
@@ -15,12 +15,12 @@ use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
-    protected $utilsService;
+    protected $UtilService;
 
     public function __construct(
-        UtilsService $utilsService
+        UtilService $UtilService
     ) {
-        $this->utilsService = $utilsService;
+        $this->UtilService = $UtilService;
     }
 
     /**
@@ -44,7 +44,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $user = $this->utilsService->fillObjectFromRequest(new User(), $request);
+        $user = $this->UtilService->fillObjectFromRequest(new User(), $request);
         $user->saveOrFail();
         return redirect()->route('users.show', $user);
     }
@@ -70,7 +70,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user = $this->utilsService->fillObjectFromRequest($user, $request, false);
+        $user = $this->UtilService->fillObjectFromRequest($user, $request, false);
         $user->saveOrFail();
 
         return redirect()->route('users.index');

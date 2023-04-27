@@ -3,7 +3,7 @@
 namespace Tests\Template\Unit;
 
 use App\Models\User;
-use App\Services\UtilsService;
+use App\Services\UtilService;
 use PHPUnit\Framework\TestCase;
 
 class ServiceTest extends TestCase
@@ -24,8 +24,8 @@ class ServiceTest extends TestCase
      *
      * @return void
      */
-    public function test_utilsservice_exist()
+    public function test_UtilService_exist()
     {
-        $this->assertFileExists('app\Services\UtilsService.php');
+        $this->assertFileExists('app\Services\UtilService.php');
     }
 }

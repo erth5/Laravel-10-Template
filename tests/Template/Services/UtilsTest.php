@@ -5,7 +5,7 @@ namespace Tests\Template\Services;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Services\UtilsService;
+use App\Services\UtilService;
 use Illuminate\Foundation\Testing\WithFaker;
 
 class UtilsTest extends TestCase
@@ -34,10 +34,10 @@ class UtilsTest extends TestCase
      */
     public function test_validateRequest(): void
     {
-        $utilsService = new UtilsService;
+        $UtilService = new UtilService;
 
         $request = new Request($this->userArray);
-        $SuccessValidation = $utilsService->validateRequest(
+        $SuccessValidation = $UtilService->validateRequest(
             $request,
             [
                 'name' => 'required|max:255',
@@ -47,7 +47,7 @@ class UtilsTest extends TestCase
         );
         $this->assertTrue($SuccessValidation);
 
-        $FailureValidation = $utilsService->validateRequest(
+        $FailureValidation = $UtilService->validateRequest(
             $request,
             ['failure' => 'required']
         );
@@ -64,8 +64,8 @@ class UtilsTest extends TestCase
         /* object that will be filled */
         $user = new User();
         /* call the function to populate the object with values from the array */
-        $utilsService = new UtilsService;
-        $user = $utilsService->fillObjectFromRequest($user, $request, withNullValues:false);
+        $UtilService = new UtilService;
+        $user = $UtilService->fillObjectFromRequest($user, $request, withNullValues:false);
         /* assert that the object was correctly populated with values from the array */
         $this->assertEquals('Jane', $user->name);
         $this->assertEquals('uil22093@omeie.com', $user->email);
@@ -85,11 +85,11 @@ class UtilsTest extends TestCase
         ]);
         $this->assertIsObject($data);
 
-        $utilsService = new UtilsService;
+        $UtilService = new UtilService;
         $user = new User();
-        // $user = $utilsService->fillObject($user, $this->userArray);
-        $user = $utilsService->fillObject($user, $this->stackedUserArray);
-        // $user = $utilsService->fillObject($user, $data);
+        // $user = $UtilService->fillObject($user, $this->userArray);
+        $user = $UtilService->fillObject($user, $this->stackedUserArray);
+        // $user = $UtilService->fillObject($user, $data);
 
         $this->assertEquals('Jane', $user->name);
         $this->assertEquals('uil22093@omeie.com', $user->email);

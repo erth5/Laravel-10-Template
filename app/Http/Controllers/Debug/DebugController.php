@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Debug;
 use App\Models\User;
 use App\Models\Person;
 use Illuminate\Http\Request;
-use App\Services\UtilsService;
+use App\Services\UtilService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
@@ -19,10 +19,10 @@ class DebugController extends Controller
      * use Illuminate\Support\Facades\Route;
      */
 
-    protected $utilsService;
-    public function __construct(UtilsService $utilsService)
+    protected $UtilService;
+    public function __construct(UtilService $UtilService)
     {
-        $this->utilsService = $utilsService;
+        $this->UtilService = $UtilService;
     }
 
     /**
@@ -149,7 +149,7 @@ class DebugController extends Controller
 
         /** works */
         // $columns = ['id', 'user_id', 'surname', 'last_name', 'username', 'created_at', 'updated_at'];
-        // $coloumschecker = $this->utilsService->databaseHasColumns('people', $columns);
+        // $coloumschecker = $this->UtilService->databaseHasColumns('people', $columns);
         // dd($coloumschecker);
 
         /** works */
@@ -159,11 +159,11 @@ class DebugController extends Controller
 
         /** works */
         // $columns = ['surname', 'last_name', 'username'];
-        // $coloumschecker = $this->utilsService->proofDatabaseFields(Person::class, $columns);
+        // $coloumschecker = $this->UtilService->proofDatabaseFields(Person::class, $columns);
         // dd($coloumschecker);
 
         /** works */
-        // $coloumschecker = $this->utilsService->getFillableKeys(Person::class);
+        // $coloumschecker = $this->UtilService->getFillableKeys(Person::class);
         // dd($coloumschecker);
 
         /** works */
