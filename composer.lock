@@ -2427,16 +2427,16 @@
         },
         {
             "name": "laravel/sanctum",
-            "version": "v3.2.4",
+            "version": "v3.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sanctum.git",
-                "reference": "c8269dcff3cda261ce113ab9548a0253d709aa91"
+                "reference": "8ebda85d59d3c414863a7f4d816ef8302faad876"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sanctum/zipball/c8269dcff3cda261ce113ab9548a0253d709aa91",
-                "reference": "c8269dcff3cda261ce113ab9548a0253d709aa91",
+                "url": "https://api.github.com/repos/laravel/sanctum/zipball/8ebda85d59d3c414863a7f4d816ef8302faad876",
+                "reference": "8ebda85d59d3c414863a7f4d816ef8302faad876",
                 "shasum": ""
             },
             "require": {
@@ -2489,7 +2489,7 @@
                 "issues": "https://github.com/laravel/sanctum/issues",
                 "source": "https://github.com/laravel/sanctum"
             },
-            "time": "2023-04-26T18:55:47+00:00"
+            "time": "2023-05-01T19:39:51+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -3435,19 +3435,21 @@
         },
         {
             "name": "milwad/laravel-validate",
-            "version": "v1.7",
+            "version": "v1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/milwad-dev/laravel-validate.git",
-                "reference": "69a1c41bdccc930c92b880a13e826b458ba2d8e1"
+                "reference": "ac2d3ded0a00f1aa488a2ffe1db037fb7e2bcc7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/milwad-dev/laravel-validate/zipball/69a1c41bdccc930c92b880a13e826b458ba2d8e1",
-                "reference": "69a1c41bdccc930c92b880a13e826b458ba2d8e1",
+                "url": "https://api.github.com/repos/milwad-dev/laravel-validate/zipball/ac2d3ded0a00f1aa488a2ffe1db037fb7e2bcc7c",
+                "reference": "ac2d3ded0a00f1aa488a2ffe1db037fb7e2bcc7c",
                 "shasum": ""
             },
             "require": {
+                "ext-bcmath": "*",
+                "ext-ctype": "*",
                 "laravel/framework": "9.*|10.*",
                 "morilog/jalali": "3.*",
                 "php": "^8.0"
@@ -3498,9 +3500,9 @@
             ],
             "support": {
                 "issues": "https://github.com/milwad-dev/laravel-validate/issues",
-                "source": "https://github.com/milwad-dev/laravel-validate/tree/v1.7"
+                "source": "https://github.com/milwad-dev/laravel-validate/tree/v1.7.1"
             },
-            "time": "2023-04-23T08:15:46+00:00"
+            "time": "2023-04-30T14:04:37+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -5226,16 +5228,16 @@
         },
         {
             "name": "spatie/db-dumper",
-            "version": "3.3.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/db-dumper.git",
-                "reference": "129b8254b2c9f10881a754a692bd9507b09a1893"
+                "reference": "3b9fd47899bf6a59d3452392121c9ce675d55d34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/db-dumper/zipball/129b8254b2c9f10881a754a692bd9507b09a1893",
-                "reference": "129b8254b2c9f10881a754a692bd9507b09a1893",
+                "url": "https://api.github.com/repos/spatie/db-dumper/zipball/3b9fd47899bf6a59d3452392121c9ce675d55d34",
+                "reference": "3b9fd47899bf6a59d3452392121c9ce675d55d34",
                 "shasum": ""
             },
             "require": {
@@ -5243,7 +5245,7 @@
                 "symfony/process": "^5.0|^6.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.5"
+                "pestphp/pest": "^1.22"
             },
             "type": "library",
             "autoload": {
@@ -5273,7 +5275,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/db-dumper/tree/3.3.0"
+                "source": "https://github.com/spatie/db-dumper/tree/3.3.1"
             },
             "funding": [
                 {
@@ -5285,20 +5287,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-01T20:20:26+00:00"
+            "time": "2023-05-02T11:05:31+00:00"
         },
         {
             "name": "spatie/laravel-backup",
-            "version": "8.1.9",
+            "version": "8.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-backup.git",
-                "reference": "381f56fa109dd28f1b8366d2c24cb46267720c50"
+                "reference": "a743a8bc21e388e5cc1bceff676859180f018771"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/381f56fa109dd28f1b8366d2c24cb46267720c50",
-                "reference": "381f56fa109dd28f1b8366d2c24cb46267720c50",
+                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/a743a8bc21e388e5cc1bceff676859180f018771",
+                "reference": "a743a8bc21e388e5cc1bceff676859180f018771",
                 "shasum": ""
             },
             "require": {
@@ -5372,7 +5374,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-backup/issues",
-                "source": "https://github.com/spatie/laravel-backup/tree/8.1.9"
+                "source": "https://github.com/spatie/laravel-backup/tree/8.1.10"
             },
             "funding": [
                 {
@@ -5384,7 +5386,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2023-04-25T07:19:55+00:00"
+            "time": "2023-05-02T07:30:18+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -10761,16 +10763,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.20.3",
+            "version": "1.20.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "6c04009f6cae6eda2f040745b6b846080ef069c2"
+                "reference": "7d568c87a9df9c5f7e8b5f075fc469aa8cb0a4cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/6c04009f6cae6eda2f040745b6b846080ef069c2",
-                "reference": "6c04009f6cae6eda2f040745b6b846080ef069c2",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/7d568c87a9df9c5f7e8b5f075fc469aa8cb0a4cd",
+                "reference": "7d568c87a9df9c5f7e8b5f075fc469aa8cb0a4cd",
                 "shasum": ""
             },
             "require": {
@@ -10800,9 +10802,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.20.3"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.20.4"
             },
-            "time": "2023-04-25T09:01:03+00:00"
+            "time": "2023-05-02T09:19:37+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -11526,16 +11528,16 @@
         },
         {
             "name": "sebastian/diff",
-            "version": "5.0.1",
+            "version": "5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "aae9a0a43bff37bd5d8d0311426c87bf36153f02"
+                "reference": "912dc2fbe3e3c1e7873313cc801b100b6c68c87b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/aae9a0a43bff37bd5d8d0311426c87bf36153f02",
-                "reference": "aae9a0a43bff37bd5d8d0311426c87bf36153f02",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/912dc2fbe3e3c1e7873313cc801b100b6c68c87b",
+                "reference": "912dc2fbe3e3c1e7873313cc801b100b6c68c87b",
                 "shasum": ""
             },
             "require": {
@@ -11581,7 +11583,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/diff/issues",
                 "security": "https://github.com/sebastianbergmann/diff/security/policy",
-                "source": "https://github.com/sebastianbergmann/diff/tree/5.0.1"
+                "source": "https://github.com/sebastianbergmann/diff/tree/5.0.3"
             },
             "funding": [
                 {
@@ -11589,7 +11591,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-03-23T05:12:41+00:00"
+            "time": "2023-05-01T07:48:21+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -12579,5 +12581,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
