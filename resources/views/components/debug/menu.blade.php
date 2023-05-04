@@ -22,7 +22,7 @@
     <a href="/lang/lang_debug">Language Debug</a>
 </blockquote>
 <a {{ !Route::has('voyager') ? 'class=disabled' : '' }} href="/admin">Voyager</a>
-<a {{ !Route::has('nova') ? 'class=disabled' : '' }} href="/nova">Nova</a>
+<a {{ !Route::has('nova.pages.home') ? 'class=disabled' : '' }} href="/nova">Nova</a>
 <blockquote></blockquote>
 <a {{ !Route::has('horizon') ? 'class=disabled' : '' }} href="/horizon">Horizon</a>
 <a {{ !Route::has('telescope') ? 'class=disabled' : '' }} href="/telescope">Telescope</a>

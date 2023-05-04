@@ -29,7 +29,7 @@ php artisan db:seed --class=UserSeeder
 
 ## Helper
 
-```
+```terminal
 php artisan make:controller Helper/LangController
 php artisan make:controller Helper/PermissionAndRoleController
 php artisan make:migration create_permission_tables
@@ -37,7 +37,7 @@ php artisan make:migration create_permission_tables
 
 ## Jobs
 
-```
+```terminal
 php artisan queue:table
 ```
 
