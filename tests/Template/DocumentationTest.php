@@ -2,9 +2,9 @@
 
 namespace Tests\Template;
 
+use Tests\TestCase;
 use Illuminate\Support\Facades\Route;
 use function PHPUnit\Framework\assertFalse;
-use Tests\TestCase;
 
 class DocumentationTest extends TestCase
 {
@@ -23,7 +23,7 @@ class DocumentationTest extends TestCase
             $swagger = $this->get('/api/documentation');
             $swagger->assertStatus(200);
         } else {
-            assertFalse(false);
+            $this->markTestSkipped('Swagger is not activated');
         }
     }
 
@@ -40,7 +40,7 @@ class DocumentationTest extends TestCase
             $swagger = $this->get('/docs/api-docs.json');
             $swagger->assertStatus(200);
         } else {
-            assertFalse(false);
+            $this->markTestSkipped('Swagger is not activated');
         }
     }
 }
