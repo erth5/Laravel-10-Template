@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use InvalidArgumentException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
@@ -51,7 +53,7 @@ class UtilService
     public function fillObject($object, $data)
     {
         if (! $this->databaseName) {
-            $this->databaseName = strtolower(Str::plural(class_basename($object), 2));
+            $this->databaseName = $this->getDbName(class_basename($object));
             $this->tableColumnNames = $this->getDbColumnsWithoutBoolean($this->databaseName);
             $this->checkboxtableColumnNames = $this->getDbBooleanColumns($this->databaseName);
         }
@@ -124,24 +126,24 @@ class UtilService
      * @param array checkboxtableColumnNames array Array von attribut-Namen (string) die checkbox-werte (boolean-werte) repräsentieren, die aus dem Request, die im Objekt gefüllt werden sollen
      * @param request req request request Request oder SupportRequest
      * */
-    public function fillObjectFromRequest($object, Request $req, $withNullValues = true)
+    public function fillObjectFromRequest($model, Request $req, $withNullValues = true)
     {
-        $databaseName = strtolower(Str::plural(class_basename($object), 2));
+        $databaseName = $this->getDbName(class_basename($model));
         $tableColumnNames = $this->getDbColumnsWithoutBoolean($databaseName);
         $checkboxtableColumnNames = $this->getDbBooleanColumns($databaseName);
 
-        Log::debug('fillObjectFromRequest action to Object: '.$object.'starts');
+        Log::debug('fillObjectFromRequest action to Object: '.$model.'starts');
 
         if (isset($tableColumnNames)) {
             foreach ($tableColumnNames as $columnName) {
                 if ($req->has($columnName)) {
                     if ($withNullValues || $req->get($columnName) != null) {
-                        if ($object->{$columnName} != $req->{$columnName}) {
+                        if ($model->{$columnName} != $req->{$columnName}) {
                             Log::debug('Update DB Column '.$columnName.
-                            ' from '.$object->{$columnName}.
+                            ' from '.$model->{$columnName}.
                             ' to '.$req->{$columnName});
 
-                            $object->{$columnName} = $req->{$columnName};
+                            $model->{$columnName} = $req->{$columnName};
                         }
                     }
                 }
@@ -151,27 +153,27 @@ class UtilService
         if (isset($checkboxtableColumnNames)) {
             foreach ($checkboxtableColumnNames as $checkboxColumnName) {
                 Log::debug('Update DB Checkbox Column '.$checkboxColumnName.
-                            ' from '.$object->{$checkboxColumnName} ?? 'false'.
+                            ' from '.$model->{$checkboxColumnName} ?? 'false'.
                             ' to '.$req->{$checkboxColumnName}) == 'false';
 
                 /* Checkboxen geben Keys nur zurück, wenn sie angekreutzt wurden */
-                $req->has($checkboxColumnName) ? $object->{$checkboxColumnName} = true : $object->{$checkboxColumnName} = false;
+                $req->has($checkboxColumnName) ? $model->{$checkboxColumnName} = true : $model->{$checkboxColumnName} = false;
             }
         }
 
-        return $object;
+        return $model;
     }
 
     /**
      * Befüllt ein Eloquent Model mit Daten aus einem Array
      *
-     * @param object Objekt Model, dessen Attribute gefüllt werden sollen
-     * @param  array  $array mit Daten
-     * @return object gefülltes Objekt
+     * @param Object $objekt Model, dessen Attribute gefüllt werden sollen
+     * @param Array  $array mit Daten
+     * @return Model gefülltes Model
      */
-    public function fillObjectFromArrayRecursiv($object, array $array)
+    public function fillObjectFromArrayRecursiv($model, array $array)
     {
-        $this->databaseName = strtolower(Str::plural(class_basename($object), 2));
+        $this->databaseName = $this->getDbName(class_basename($model));
         if (! $this->tableColumnNames) {
             $this->tableColumnNames = $this->getDbColumnsWithoutBoolean($this->databaseName);
         }
@@ -182,12 +184,56 @@ class UtilService
         foreach ($array as $key => $value) {
             if (is_string($value)) {
                 if (in_array($key, $this->tableColumnNames)) {
-                    $object->{$key} = $value;
+                    $model->{$key} = $value;
                 }
             }
         }
 
-        return $object;
+        return $model;
+    }
+
+    /**
+     * Gibt den Konvention Datenbankname eines Models zurück
+     *
+     * @param Model $model_name
+     * @return String $database_name
+     */
+    public function getDbName($model)
+    {
+        // Überprüfen, ob das Model-Argument leer ist
+        if (empty($model)) {
+            throw new InvalidArgumentException("Model name cannot be empty.");
+        }
+
+        // Überprüfen, ob das Model-Argument eine Zeichenkette ist
+        if (!is_string($model)) {
+            throw new InvalidArgumentException("Model name must be a string.");
+        }
+
+        // Konvertieren Sie den Model-Namen in Unterstrich-Notation
+        $modelName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $model));
+
+        // Entfernen Sie den Pluralisierungssuffix 's' vom Modellnamen, falls vorhanden
+        // if (substr($modelName, -1) == 's') {
+        //     $modelName = substr($modelName, 0, -1);
+        // }
+
+        // Ersetzen Sie alle nicht-ASCII-Zeichen durch Unterstriche, um ungültige Zeichen in der Datenbank zu vermeiden
+        $modelName = preg_replace('/[^\x20-\x7E]/', '_', $modelName);
+
+        // Ersetzen Sie alle Punkte durch Unterstriche
+        $dbName = str_replace('.', '_', $modelName);
+
+        // Überprüfen, ob der Datenbankname leer ist
+        if (empty($dbName)) {
+            throw new RuntimeException("Unable to create database name from the given model name.");
+        }
+
+        if (substr($dbName, -1) === "y") {
+            return substr_replace($dbName, "ies", -1);
+        }
+        // Rückgabe des Datenbanknamens mit Pluralisierungssuffix
+        return $dbName . 's';
     }
 
     private function getDbColumnsWithoutBoolean(string $database)
@@ -313,5 +359,55 @@ class UtilService
         }
 
         return (bool) preg_match('/\bdocker\b/i', $cgroup);
+    }
+
+    /**
+     * Ermittelt die Plattform eines PCs.
+     *
+     * @return string Die erkannte Plattform (z.B. x86 oder x64).
+     */
+    public function detectPlatform()
+    {
+        // Architektur abrufen
+        $arch = php_uname('m');
+
+        // Überprüfen, ob die Architektur ermittelt werden konnte
+        if (!$arch) {
+            return null;
+        }
+
+        // Plattformerkennung
+        if (strpos($arch, 'x86') !== false) { // wenn x86-Architektur
+            return "x86";
+        } elseif (strpos($arch, 'x86_64') !== false || strpos($arch, 'amd64') !== false) { // wenn x64-Architektur
+            return "x64";
+        } else { // ansonsten unbekannt
+            return null;
+        }
+    }
+
+    /**
+     * Ermittelt, ob es sich bei dem System um ein AMD- oder Intel-System handelt.
+     *
+     * @return string|null Die erkannte CPU-Architektur (AMD oder Intel), oder null, wenn die Architektur nicht erkannt werden konnte.
+     */
+    public function detectCpuArchitecture()
+    {
+        // Prozessorname abrufen
+        $processor_name = php_uname('p');
+
+        // Überprüfen, ob der Prozessorname ermittelt werden konnte
+        if (!$processor_name) {
+            return null;
+        }
+
+        // CPU-Architektur erkennen
+        if (stripos($processor_name, 'AMD') !== false) { // Wenn es sich um ein AMD-System handelt
+            return "AMD";
+        } elseif (stripos($processor_name, 'Intel') !== false) { // Wenn es sich um ein Intel-System handelt
+            return "Intel";
+        } else { // Ansonsten unbekannt
+            return null;
+        }
     }
 }
