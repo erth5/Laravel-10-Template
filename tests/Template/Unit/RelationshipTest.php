@@ -2,13 +2,13 @@
 
 namespace Tests\Template\Unit;
 
-use Tests\TestCase;
-use App\Models\Lang;
-use App\Models\User;
 use App\Models\Image;
+use App\Models\Lang;
 use App\Models\Person;
-// use PHPUnit\Framework\TestCase;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+// use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class RelationshipTest extends TestCase
 {
@@ -53,6 +53,7 @@ class RelationshipTest extends TestCase
 
         $this->assertTrue($person->image->contains($image));
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $person->image);
+        $this->assertInstanceOf(Image::class, $person->image[0]);
     }
 
     /**
@@ -64,8 +65,8 @@ class RelationshipTest extends TestCase
     {
         $person = Person::factory(Person::class)->create();
         $image = Image::factory(Image::class)->create(['person_id' => $person]);
-
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Model', $image->person);
+        $this->assertInstanceOf(Person::class, $image->person);
     }
 
     /**
