@@ -13,7 +13,7 @@ class LangPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -21,7 +21,7 @@ class LangPolicy
      */
     public function view(User $user, Lang $lang): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -29,7 +29,7 @@ class LangPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -37,7 +37,7 @@ class LangPolicy
      */
     public function update(User $user, Lang $lang): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -45,7 +45,7 @@ class LangPolicy
      */
     public function delete(User $user, Lang $lang): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -53,7 +53,7 @@ class LangPolicy
      */
     public function restore(User $user, Lang $lang): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class LangPolicy
      */
     public function forceDelete(User $user, Lang $lang): bool
     {
-        //
+        return false;
     }
 }
