@@ -27,6 +27,7 @@
         "milwad/laravel-validate": "^1.6",
         "nuwave/lighthouse": "^5.71",
         "opcodesio/log-viewer": "^2.1",
+        "predis/predis": "^2.2",
         "psr/simple-cache": "2.0",
         "spatie/laravel-backup": "^8.1",
         "spatie/laravel-permission": "^5.9",

@@ -32,12 +32,17 @@ class UtilService
      * @param $validationRules associative array Array mit Validierungsregeln: https://laravel.com/docs/10.x/validation#manually-creating-validators
      * @param $validationErrorMessage string Fehlermeldung wenn Validierung mit Fehler abbricht
      * */
-    public function validateRequest($req, $validationRules)
+    public function validateRequest($req, $validationRules, $validationErrorMessage = '')
     {
+        // Check if request and validation rules are set
+        if(!$req || !$validationRules) {
+            throw new InvalidArgumentException('Request and validation rules are required.');
+        }
+
         $validator = Validator::make($req->all(), $validationRules);
 
         if ($validator->fails()) {
-            return false;
+            throw new ValidationException($validator, $validationErrorMessage);
         } else {
             return true;
         }
@@ -50,12 +55,16 @@ class UtilService
      * @param mixed Daten mit den Schlüsselnamen und Werten des zu füllenden Objektes
      * @return object Objekt Model, mit gefüllten Attributen
      */
-    public function fillObject($object, $data)
+    public function fillObject($object, $data, $databaseName = null)
     {
         if (! $this->databaseName) {
-            $this->databaseName = $this->getDbName(class_basename($object));
-            $this->tableColumnNames = $this->getDbColumnsWithoutBoolean($this->databaseName);
-            $this->checkboxtableColumnNames = $this->getDbBooleanColumns($this->databaseName);
+            try {
+                $this->databaseName = $databaseName ?? $this->getDbName(class_basename($object));
+                $this->tableColumnNames = $this->getDbColumnsWithoutBoolean($this->databaseName);
+                $this->checkboxtableColumnNames = $this->getDbBooleanColumns($this->databaseName);
+            } catch(\Exception $e) {
+                throw new RuntimeException('Error while setting database and column names');
+            }
         }
 
         if ($data instanceof Model || is_object($data)) {
