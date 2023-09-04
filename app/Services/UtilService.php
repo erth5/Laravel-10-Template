@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Request as SupportRequest;
 
 // gettype($data) instanceof SupportRequest not supportet
@@ -35,7 +36,7 @@ class UtilService
     public function validateRequest($req, $validationRules, $validationErrorMessage = '')
     {
         // Check if request and validation rules are set
-        if(!$req || !$validationRules) {
+        if (!$req || !$validationRules) {
             throw new InvalidArgumentException('Request and validation rules are required.');
         }
 
@@ -57,12 +58,12 @@ class UtilService
      */
     public function fillObject($object, $data, $databaseName = null)
     {
-        if (! $this->databaseName) {
+        if (!$this->databaseName) {
             try {
                 $this->databaseName = $databaseName ?? $this->getDbName(class_basename($object));
                 $this->tableColumnNames = $this->getDbColumnsWithoutBoolean($this->databaseName);
                 $this->checkboxtableColumnNames = $this->getDbBooleanColumns($this->databaseName);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 throw new RuntimeException('Error while setting database and column names');
             }
         }
@@ -91,7 +92,7 @@ class UtilService
                     $object->{$key} = $value;
                 }
             } else {
-                Log::debug('the key '.$key.' with value '.$value.' not found in '.get_class($object));
+                Log::debug('the key ' . $key . ' with value ' . $value . ' not found in ' . get_class($object));
             }
         }
 
@@ -120,7 +121,7 @@ class UtilService
                     $object->{$key} = $value;
                 }
             } else {
-                Log::debug('the key '.$key.' with value '.$value.' not found in '.get_class($object));
+                Log::debug('the key ' . $key . ' with value ' . $value . ' not found in ' . get_class($object));
             }
         }
 
@@ -141,16 +142,16 @@ class UtilService
         $tableColumnNames = $this->getDbColumnsWithoutBoolean($databaseName);
         $checkboxtableColumnNames = $this->getDbBooleanColumns($databaseName);
 
-        Log::debug('fillObjectFromRequest action to Object: '.$model.'starts');
+        Log::debug('fillObjectFromRequest action to Object: ' . $model . 'starts');
 
         if (isset($tableColumnNames)) {
             foreach ($tableColumnNames as $columnName) {
                 if ($req->has($columnName)) {
                     if ($withNullValues || $req->get($columnName) != null) {
                         if ($model->{$columnName} != $req->{$columnName}) {
-                            Log::debug('Update DB Column '.$columnName.
-                            ' from '.$model->{$columnName}.
-                            ' to '.$req->{$columnName});
+                            Log::debug('Update DB Column ' . $columnName .
+                                ' from ' . $model->{$columnName} .
+                                ' to ' . $req->{$columnName});
 
                             $model->{$columnName} = $req->{$columnName};
                         }
@@ -161,9 +162,9 @@ class UtilService
 
         if (isset($checkboxtableColumnNames)) {
             foreach ($checkboxtableColumnNames as $checkboxColumnName) {
-                Log::debug('Update DB Checkbox Column '.$checkboxColumnName.
-                            ' from '.$model->{$checkboxColumnName} ?? 'false'.
-                            ' to '.$req->{$checkboxColumnName}) == 'false';
+                Log::debug('Update DB Checkbox Column ' . $checkboxColumnName .
+                    ' from ' . $model->{$checkboxColumnName} ?? 'false' .
+                    ' to ' . $req->{$checkboxColumnName}) == 'false';
 
                 /* Checkboxen geben Keys nur zurück, wenn sie angekreutzt wurden */
                 $req->has($checkboxColumnName) ? $model->{$checkboxColumnName} = true : $model->{$checkboxColumnName} = false;
@@ -183,10 +184,10 @@ class UtilService
     public function fillObjectFromArrayRecursiv($model, array $array)
     {
         $this->databaseName = $this->getDbName(class_basename($model));
-        if (! $this->tableColumnNames) {
+        if (!$this->tableColumnNames) {
             $this->tableColumnNames = $this->getDbColumnsWithoutBoolean($this->databaseName);
         }
-        if (! $this->checkboxtableColumnNames) {
+        if (!$this->checkboxtableColumnNames) {
             $this->checkboxtableColumnNames ?? $this->getDbBooleanColumns($this->databaseName);
         }
 
@@ -282,7 +283,7 @@ class UtilService
     {
         $currentColumns = Schema::getColumnListing($databaseName);
         foreach ($currentColumns as $currentColumn) {
-            if (! in_array($currentColumn, $columns)) {
+            if (!in_array($currentColumn, $columns)) {
                 return false;
             }
         }
@@ -301,7 +302,7 @@ class UtilService
     {
         $currentColumns = Schema::getColumnListing($databaseName);
         foreach ($columns as $column) {
-            if (! in_array($column, $currentColumns)) {
+            if (!in_array($column, $currentColumns)) {
                 return false;
             }
         }
@@ -333,12 +334,12 @@ class UtilService
         $objectInstance = new $modelClass();
         $currentColumns = $objectInstance->getFillable();
         foreach ($columns as $column) {
-            if (! in_array($column, $currentColumns)) {
+            if (!in_array($column, $currentColumns)) {
                 return false;
             }
         }
         foreach ($currentColumns as $currentColumn) {
-            if (! in_array($currentColumn, $columns)) {
+            if (!in_array($currentColumn, $columns)) {
                 return false;
             }
         }
@@ -418,5 +419,61 @@ class UtilService
         } else { // Ansonsten unbekannt
             return null;
         }
+    }
+
+    public function getOwnMacAddress()
+    {
+        $output = null;
+        $retval = null;
+
+        // Linux
+        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
+            exec("ifconfig -a | grep -o -E '([[:xdigit:]]{1,2}[:-]){5}[[:xdigit:]]{1,2}'", $output, $retval);
+        } else {
+            // Windows
+            exec("getmac", $output, $retval);
+        }
+
+        if ($retval == 0) {
+            echo "MAC-Adressen gefunden: ";
+            return $output;
+        } else {
+            echo "Fehler beim Abrufen der MAC-Adresse.";
+            return null;
+        }
+    }
+
+    public function getSystemPackageManger()
+    {
+        $os = php_uname();
+
+        // Windows
+        if (stripos($os, 'Windows') !== false) {
+            return 'choco';
+        }
+
+        // Linux
+        if (stripos($os, 'Linux') !== false) {
+            $packageManagers = ['apt', 'yum', 'dnf', 'zypper', 'pacman'];
+
+            foreach ($packageManagers as $manager) {
+                $output = null;
+                $retval = null;
+
+                exec("which $manager 2>&1", $output, $retval);
+
+                if ($retval === 0) {
+                    return $manager;
+                } else {
+                    return 'Unbekannt';
+                }
+            }
+        }
+
+        // macOS
+        if (stripos($os, 'Darwin') !== false) {
+            return 'brew';  // Homebrew ist der übliche Paketmanager für macOS
+        }
+        return 'Unbekannt';
     }
 }
