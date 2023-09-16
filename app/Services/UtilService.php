@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
-use RuntimeException;
-use Illuminate\Support\Str;
+use Doctrine\Inflector\InflectorFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use InvalidArgumentException;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Request as SupportRequest;
+use InvalidArgumentException;
+use RuntimeException;
 
 // gettype($data) instanceof SupportRequest not supportet
 
@@ -61,6 +61,7 @@ class UtilService
         if (!$this->databaseName) {
             try {
                 $this->databaseName = $databaseName ?? $this->getDbName(class_basename($object));
+                
                 $this->tableColumnNames = $this->getDbColumnsWithoutBoolean($this->databaseName);
                 $this->checkboxtableColumnNames = $this->getDbBooleanColumns($this->databaseName);
             } catch (\Exception $e) {
@@ -142,7 +143,7 @@ class UtilService
         $tableColumnNames = $this->getDbColumnsWithoutBoolean($databaseName);
         $checkboxtableColumnNames = $this->getDbBooleanColumns($databaseName);
 
-        Log::debug('fillObjectFromRequest action to Object: ' . $model . 'starts');
+        Log::debug('fillObjectFromRequest model: ' . $model);
 
         if (isset($tableColumnNames)) {
             foreach ($tableColumnNames as $columnName) {
@@ -206,10 +207,13 @@ class UtilService
      * Gibt den Konvention Datenbankname eines Models zurück
      *
      * @param Model $model_name
-     * @return String $database_name
      */
     public function getDbName($model)
     {
+        $inflector = InflectorFactory::create()->build();
+        return $inflector->pluralize($model); 
+
+        /* Methode ohne Wörterbuch */
         // Überprüfen, ob das Model-Argument leer ist
         if (empty($model)) {
             throw new InvalidArgumentException("Model name cannot be empty.");
@@ -445,15 +449,15 @@ class UtilService
 
     public function getSystemPackageManger()
     {
-        $os = php_uname();
-
-        // Windows
-        if (stripos($os, 'Windows') !== false) {
-            return 'choco';
+        if (strtolower(php_uname()) == 'windows') {
+            return 'choco'; // winget
         }
 
-        // Linux
-        if (stripos($os, 'Linux') !== false) {
+        if (strtolower(php_uname('s')) == 'darwin') {
+            return 'brew'; // port
+        }
+
+        if (strtolower(php_uname()) == 'linux') {
             $packageManagers = ['apt', 'yum', 'dnf', 'zypper', 'pacman'];
 
             foreach ($packageManagers as $manager) {
@@ -464,16 +468,100 @@ class UtilService
 
                 if ($retval === 0) {
                     return $manager;
-                } else {
-                    return 'Unbekannt';
                 }
             }
         }
-
-        // macOS
-        if (stripos($os, 'Darwin') !== false) {
-            return 'brew';  // Homebrew ist der übliche Paketmanager für macOS
-        }
-        return 'Unbekannt';
+        return;
     }
+
+    public function getSystemPackageMangers()
+    {
+        $managers = [];
+
+        if (stripos(php_uname(), 'Windows') !== false) {
+            exec("where choco 2>nul", $output, $retval);
+            $retval === 0 ? $managers[] = "choco" : null;
+            exec("where winget 2>nul", $output, $retval);
+            $retval === 0 ? $managers[] = "winget" : null;
+            return $managers;
+        }
+
+        if (stripos(php_uname('s'), 'Darwin') !== false) {
+            exec("which brew", $output, $retval);
+            $retval === 0 ? $managers[] = "brew" : null;
+            exec("which port", $output, $retval);
+            $retval === 0 ? $managers[] = "port" : null;
+            return $managers;
+        }
+
+        if (stripos(php_uname(), 'Linux') !== false) {
+            $packageManagers = ['apt', 'yum', 'dnf', 'zypper', 'pacman'];
+            foreach ($packageManagers as $manager) {
+                $output = null;
+                $retval = null;
+
+                exec("which $manager 2>&1", $output, $retval);
+
+                if ($retval === 0) {
+                    $manager[] = $manager;
+                }
+            }
+            return $managers;
+        }
+        return;
+    }
+    public function getOwnProtocol()
+    {
+        if (!empty($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) == 'on' || $_SERVER['HTTPS'] == '1')) {
+            $scheme = 'https';
+        } else {
+            $scheme = 'http';
+        }
+        return $scheme;
+    }
+
+
+    public function formDateFromArray($array)
+    {
+        if ($array === null) {
+            return null;
+        }
+
+        if (!is_array($array) || (count($array) !== 1 && count($array) < 6)) {
+            throw new InvalidArgumentException("Das Array hat nicht die erforderliche Anzahl an Elementen.");
+        }
+
+        if (is_array($array) && count($array) === 1) {
+            try {
+                return Carbon::parse($array[0]);
+            } catch (Exception $e) {
+                throw new InvalidArgumentException("Ungültiges Datum oder Zeit.");
+            }
+        }
+
+        $dates = [
+            'year' => $array[0],
+            'month' => $array[1],
+            'day' => $array[2],
+        ];
+        foreach ($dates as $part => $value) {
+            if (!isset($value) || !is_numeric($value)) {
+                throw new InvalidArgumentException("Der Teil '{$part}' ist nicht gesetzt oder nicht numerisch.");
+            }
+        }
+
+        $times = [
+            'hour' => isset($array[3]) ? $array[3] : null,
+            'minute' => isset($array[4]) ? $array[4] : null,
+            'second' => isset($array[5]) ? $array[5] : null,
+        ];
+
+
+        try {
+            return Carbon::create($dates['year'], $dates['month'], $dates['day'], $times['hour'], $times['minute'], $times['second']);
+        } catch (Exception $e) {
+            throw new InvalidArgumentException("Ungültiges Datum oder Zeit.");
+        }
+    }
+
 }
