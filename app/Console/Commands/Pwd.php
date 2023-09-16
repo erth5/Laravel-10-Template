@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
@@ -23,7 +22,7 @@ class Pwd extends Command
     protected $description = 'Get current System Path';
 
     /**
-     * Execute the console command.
+     * pwd ist auf Windows und Linux verfügbar
      */
     public function handle()
     {
@@ -35,12 +34,13 @@ class Pwd extends Command
                     return $output;
                 case 1:
                     Log::warning(get_class($this) . ' Runtime Fault');
+                    logger($output);
                     return false;
                 case 2:
                     Log::warning(get_class($this) . ' Syntax Fault');
                     return false;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Log::error($e);
             return $e;
         }

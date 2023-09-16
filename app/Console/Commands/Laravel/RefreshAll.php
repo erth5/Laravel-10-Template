@@ -6,6 +6,8 @@ use Exception;
 use App\Services\UtilService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Artisan;
+
 
 class RefreshAll extends Command
 {
@@ -23,6 +25,7 @@ class RefreshAll extends Command
      *
      * @var string
      */
+
     protected $signature = 'db:rebuild';
 
     /**
@@ -37,7 +40,25 @@ class RefreshAll extends Command
      */
     public function handle()
     {
+
+        /* Konfig Clear wirkt manchmal nicht */
+        Artisan::call('config:clear');
+        Artisan::call('config:cache');
+        if (!env('APP_URL')) {
+            exit(".env wurde nicht geladen.");
+        }
+
+        $log = storage_path('logs/laravel.log');
+        if (file_exists($log)) {
+            file_put_contents($log, "");
+        }
+
+
         try {
+
+            /** Konfig-Cache gibt aus der .env null zurück */
+            Artisan::call('config:clear');
+
             if (config('app.dockerized')) {
                 $this->info('Migrating in Docker environment.');
                 exec("docker compose run --rm artisan migrate:fresh --seed", $output, $result);

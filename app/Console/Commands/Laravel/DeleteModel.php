@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 use App\Services\UtilService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
+
 
 class DeleteModel extends Command
 {
@@ -98,14 +100,15 @@ class DeleteModel extends Command
                         }
 
                         /* migrations */
-                        $allMigrations = scandir(database_path('migrations'));
+                        $Allmigrations = scandir(database_path('migrations'));
                         $migrations = null;
-                        foreach ($allMigrations as $migration) {
-                            if(strpos($migration, $this->utilService->getDbName($model)) !== false) {
+                        foreach ($Allmigrations as $migration) {
+                            if (strpos($migration, $this->utilService->getDbName($model)) !== false) {
                                 $migrations[] = $migration;
                             }
                         }
-                        if($migrations) {
+                        if ($migrations) {
+
                             if ($this->confirm(sizeof($migrations) . ' migrations found, delete them?')) {
                                 foreach ($migrations as $migration) {
                                     unlink(database_path('migrations/' . $migration));
@@ -113,7 +116,7 @@ class DeleteModel extends Command
                                 }
                             }
                         }
-
+                        // $this->getPivotTables($Allmigrations, $model);
 
                     } else {
                         $this->info('Model not found');
@@ -172,12 +175,14 @@ class DeleteModel extends Command
                         }
 
                         $observer = app_path('Observers\\' . $model . 'Observer.php');
+
                         if (file_exists($observer)){
                             unlink($observer);
                             $this->info($observer . 'deleted');
                         }
 
                         /* migrations */
+
                         $allMigrations = scandir(database_path('migrations'));
                         $migrations = null;
                         foreach ($allMigrations as $migration) {
@@ -186,6 +191,7 @@ class DeleteModel extends Command
                             }
                         }
                         if($migrations) {
+
                             if ($this->confirm(sizeof($migrations) . ' migrations found, delete them?')) {
                                 foreach ($migrations as $migration) {
                                     unlink(database_path('migrations\\' . $migration));
@@ -193,6 +199,8 @@ class DeleteModel extends Command
                                 }
                             }
                         }
+
+                        // $this->getPivotTables($Allmigrations, $model);
 
                     } else {
                         $this->info('Model not found');
@@ -206,6 +214,27 @@ class DeleteModel extends Command
             }
         }
     }
+
+    // public function getPivotTables($Allmigrations, $model)
+    // {
+    // foreach ($Allmigrations as $migration) {
+    /* Funktioniert nicht */
+    // if (is_a($migration, 'Symfony\Component\Finder\SplFileInfo')) {
+    // $content = File::get($migration->getRealPath());
+    // $content = File::get($migration->getRealPath());
+
+    // Simple regex to find table creations
+    // if (preg_match_all('/Schema::create\(\s?\'(.*?)\',\s?function/', $content, $matches)) {
+    // foreach ($matches[1] as $table) {
+    /* Check if all relationships are mentioned in the migration file */
+    // if (array_reduce($model, fn ($carry, $relation) => $carry && str_contains($content, $relation), true)) {
+    // $this->info("Found pivot table: " . $table . " in file " . $migration->getFilename());
+    // }
+    // }
+    // }
+    // }
+    // }
+
 }
 
 // Setzen Sie das Migrationspräfix

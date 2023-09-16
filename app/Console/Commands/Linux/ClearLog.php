@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands\Linux;
 
-use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
@@ -41,7 +40,8 @@ class ClearLog extends Command
                     Log::warning(get_class($this) . ' Syntax Fault');
                     return false;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+
             $this->error($e->getMessage());
             return $e;
         }

@@ -34,9 +34,11 @@ class CreateModel extends Command
             switch ($result) {
                 case 0:
                     $this->info(print_r($output));
+                    break;
                 case 1:
                     Log::warning(get_class($this) . ' Runtime Fault');
                     $this->info(print_r($output));
+                    break;
                 case 2:
                     Log::error(get_class($this) . ' Syntax Fault');
                     $this->info(print_r($output));
@@ -59,21 +61,7 @@ class CreateModel extends Command
                 }
             }
 
-            exec("php artisan nova:resource " . $model, $output, $result);
-            switch ($result) {
-                case 0:
-                    $this->info(print_r($output));
-                    return $output;
-                case 1:
-                    Log::warning(get_class($this) . ' Runtime Fault');
-                    $this->info(print_r($output));
-                    return false;
-                case 2:
-                    Log::error(get_class($this) . ' Syntax Fault');
-                    $this->info(print_r($output));
-                    return false;
-            }
-        } catch (Exception $e) {
+        } catch(Exception $e) {
             return $this->error($e->getMessage());
         }
     }

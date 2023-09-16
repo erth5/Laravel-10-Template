@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Console\Commands\Debian;
+namespace App\Console\Commands\Linux;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-class ClearKernel extends Command
+class Ls extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:clear-kernel';
+    protected $signature = 'linux:ls';
 
     /**
      * The console command description.
@@ -24,14 +24,10 @@ class ClearKernel extends Command
     /**
      * Execute the console command.
      */
-    public function handle(int $keep = 0)
+    public function handle()
     {
         try {
-            if ($keep) {
-                $keep = '--keep ' . $keep;
-            }
-            //TODO: Angabe von keep ist vllt required
-            exec("sudo purge-old-kernels " . $keep, $output, $result);
+            exec("ls -al", $output, $result);
             switch ($result) {
                 case 0:
                     Log::debug($output);
@@ -44,9 +40,7 @@ class ClearKernel extends Command
                     return false;
             }
         } catch (\Exception $e) {
-
             $this->error($e->getMessage());
-            Log::error($e);
             return $e;
         }
     }
