@@ -1,37 +1,33 @@
 <?php
 
-namespace App\Console\Commands\Debian;
+namespace App\Console\Commands\Forum;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-class ClearKernel extends Command
+class Sync extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:clear-kernel';
+    protected $signature = 'app:sync';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'https://www.teamteatime.net/docs/laravel-forum/5/commands/';
 
     /**
      * Execute the console command.
      */
-    public function handle(int $keep = 0)
+    public function handle()
     {
         try {
-            if ($keep) {
-                $keep = '--keep ' . $keep;
-            }
-            //TODO: Angabe von keep ist vllt required
-            exec("sudo purge-old-kernels " . $keep, $output, $result);
+            exec("php artisan forum:sync", $output, $result);
             switch ($result) {
                 case 0:
                     Log::debug($output);
@@ -43,10 +39,8 @@ class ClearKernel extends Command
                     Log::warning(get_class($this) . ' Syntax Fault');
                     return false;
             }
-        } catch (\Exception $e) {
-
+        } catch (Exception $e) {
             $this->error($e->getMessage());
-            Log::error($e);
             return $e;
         }
     }

@@ -41,6 +41,7 @@ class ClearLog extends Command
                     return false;
             }
         } catch (\Exception $e) {
+
             $this->error($e->getMessage());
             return $e;
         }

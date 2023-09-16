@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
 
+
 class RefreshAll extends Command
 {
     protected $utilService;
@@ -24,7 +25,8 @@ class RefreshAll extends Command
      *
      * @var string
      */
-    protected $signature = 'app:rebuild';
+
+    protected $signature = 'db:rebuild';
 
     /**
      * The console command description.
@@ -38,6 +40,7 @@ class RefreshAll extends Command
      */
     public function handle()
     {
+
         /* Konfig Clear wirkt manchmal nicht */
         Artisan::call('config:clear');
         Artisan::call('config:cache');
@@ -77,11 +80,10 @@ class RefreshAll extends Command
                     $this->info(print_r($output));
                     return false;
             }
+
         } catch (Exception $e) {
             $this->error($e->getMessage());
             return $e->getMessage();
         }
-
-       
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 
+
 class DeleteModel extends Command
 {
     protected $utilService;
@@ -93,7 +94,7 @@ class DeleteModel extends Command
                         }
 
                         $observer = app_path('Observers/' . $model . 'Observer.php');
-                        if (file_exists($observer)) {
+                        if (file_exists($observer)){
                             unlink($observer);
                             $this->info($observer . 'deleted');
                         }
@@ -107,6 +108,7 @@ class DeleteModel extends Command
                             }
                         }
                         if ($migrations) {
+
                             if ($this->confirm(sizeof($migrations) . ' migrations found, delete them?')) {
                                 foreach ($migrations as $migration) {
                                     unlink(database_path('migrations/' . $migration));
@@ -115,6 +117,7 @@ class DeleteModel extends Command
                             }
                         }
                         // $this->getPivotTables($Allmigrations, $model);
+
                     } else {
                         $this->info('Model not found');
                     }
@@ -172,20 +175,23 @@ class DeleteModel extends Command
                         }
 
                         $observer = app_path('Observers\\' . $model . 'Observer.php');
-                        if (file_exists($observer)) {
+
+                        if (file_exists($observer)){
                             unlink($observer);
                             $this->info($observer . 'deleted');
                         }
 
                         /* migrations */
-                        $Allmigrations = scandir(database_path('migrations'));
+
+                        $allMigrations = scandir(database_path('migrations'));
                         $migrations = null;
-                        foreach ($Allmigrations as $migration) {
-                            if (strpos($migration, $this->utilService->getDbName($model)) !== false) {
+                        foreach ($allMigrations as $migration) {
+                            if(strpos($migration, $this->utilService->getDbName($model)) !== false) {
                                 $migrations[] = $migration;
                             }
                         }
-                        if ($migrations) {
+                        if($migrations) {
+
                             if ($this->confirm(sizeof($migrations) . ' migrations found, delete them?')) {
                                 foreach ($migrations as $migration) {
                                     unlink(database_path('migrations\\' . $migration));
@@ -193,11 +199,14 @@ class DeleteModel extends Command
                                 }
                             }
                         }
+
                         // $this->getPivotTables($Allmigrations, $model);
+
                     } else {
                         $this->info('Model not found');
                     }
                 }
+
             } catch (Exception $e) {
                 Log::error($e);
                 $this->error($e->getMessage());
