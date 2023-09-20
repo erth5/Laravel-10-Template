@@ -534,7 +534,7 @@ class UtilService
         if (is_array($array) && count($array) === 1) {
             try {
                 return Carbon::parse($array[0]);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 throw new InvalidArgumentException("Ungültiges Datum oder Zeit.");
             }
         }
@@ -559,7 +559,7 @@ class UtilService
 
         try {
             return Carbon::create($dates['year'], $dates['month'], $dates['day'], $times['hour'], $times['minute'], $times['second']);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new InvalidArgumentException("Ungültiges Datum oder Zeit.");
         }
     }
