@@ -2,8 +2,6 @@
 
 namespace App\Console\Commands\Laravel;
 
-use Exception;
-use App\Services\UtilService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
@@ -11,15 +9,6 @@ use Illuminate\Support\Facades\Artisan;
 
 class RefreshAll extends Command
 {
-    protected $utilService;
-
-    public function __construct(
-        UtilService $utilService
-    ) {
-        parent::__construct();
-        $this->utilService = $utilService;
-    }
-
     /**
      * The name and signature of the console command.
      *
@@ -81,7 +70,7 @@ class RefreshAll extends Command
                     return false;
             }
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
             return $e->getMessage();
         }

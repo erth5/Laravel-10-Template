@@ -2,24 +2,13 @@
 
 namespace App\Console\Commands\Laravel;
 
-use Exception;
-use Illuminate\Support\Str;
-use App\Services\UtilService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\File;
+use Doctrine\Inflector\InflectorFactory;
 
 
 class DeleteModel extends Command
 {
-    protected $utilService;
-
-    public function __construct(
-        UtilService $utilService
-    ) {
-        parent::__construct();
-        $this->utilService = $utilService;
-    }
     /**
      * The name and signature of the console command.
      *
@@ -32,7 +21,7 @@ class DeleteModel extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Model und zugehörige Dateien löschen';
 
     /**
      * Löscht alle Dateien die sich direkt einem Model zuordnen lassen.
@@ -103,7 +92,8 @@ class DeleteModel extends Command
                         $Allmigrations = scandir(database_path('migrations'));
                         $migrations = null;
                         foreach ($Allmigrations as $migration) {
-                            if (strpos($migration, $this->utilService->getDbName($model)) !== false) {
+                            $inflector = InflectorFactory::create()->build();
+                            if (strpos($migration, $inflector->pluralize($model) !== false)) {
                                 $migrations[] = $migration;
                             }
                         }
@@ -186,7 +176,8 @@ class DeleteModel extends Command
                         $allMigrations = scandir(database_path('migrations'));
                         $migrations = null;
                         foreach ($allMigrations as $migration) {
-                            if(strpos($migration, $this->utilService->getDbName($model)) !== false) {
+                            $inflector = InflectorFactory::create()->build();
+                            if(strpos($migration, $inflector->pluralize($model)) !== false) {
                                 $migrations[] = $migration;
                             }
                         }
@@ -207,7 +198,7 @@ class DeleteModel extends Command
                     }
                 }
 
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Log::error($e);
                 $this->error($e->getMessage());
                 return $e;
