@@ -26,7 +26,7 @@ class RouteViewTest extends TestCase
      */
     public function test_routing_debug()
     {
-        if (env('APP_DEBUG')) {
+        if (env('APP_ENV') == 'local') {
             $pathResponse = $this->get('/debug');
             $pathResponse->assertStatus(200);
         } else
@@ -35,7 +35,7 @@ class RouteViewTest extends TestCase
 
     public function test_db_connection_view()
     {
-        if (env('APP_DEBUG')) {
+        if (env('APP_ENV') == 'local') {
             $viewDb = $this->get('/test/db');
             $viewDb->assertStatus(200);
         } else
@@ -44,7 +44,7 @@ class RouteViewTest extends TestCase
 
     public function test_users_and_peoples_table_view()
     {
-        if (env('APP_DEBUG')) {
+        if (env('APP_ENV') == 'local') {
             $viewUser = $this->get('/debug/user');
             $viewUser->assertStatus(200);
             // AssertEuqals(Person surname = User surname);
