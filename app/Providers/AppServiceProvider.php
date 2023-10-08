@@ -30,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
+        if ($this->app->environment('production') || $this->app->environment('staging')) {
+            URL::forceScheme('https');
+        }
+
         /**
          * This action will block dusk tests, because
          * Dusk environement has own environement settings
