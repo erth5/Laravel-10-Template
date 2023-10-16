@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Laravel;
+namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
@@ -11,7 +11,7 @@ class Clear extends Command
      *
      * @var string
      */
-    protected $signature = 'app:clear';
+    protected $signature = 'system:clear';
 
     /**
      * The console command description.
@@ -27,5 +27,7 @@ class Clear extends Command
     {
         // Cache::flush();
         cache()->flush();
+        opcache_reset();
+        // rm -rf ~/.composer/cache - rmdir /s /q %USERPROFILE%\AppData\Roaming\Composer\Cache
     }
 }

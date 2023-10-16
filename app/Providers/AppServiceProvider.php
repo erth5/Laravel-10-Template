@@ -2,16 +2,17 @@
 
 namespace App\Providers;
 
-use App\ResourceRegistrar;
-use AshAllenDesign\ConfigValidator\Services\ConfigValidator;
 use Carbon\Carbon;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Routing\ResourceRegistrar as BaseResourceRegistrar;
+use App\ResourceRegistrar;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
+use AshAllenDesign\ConfigValidator\Services\ConfigValidator;
+use Illuminate\Routing\ResourceRegistrar as BaseResourceRegistrar;
 
 class AppServiceProvider extends ServiceProvider
 {
