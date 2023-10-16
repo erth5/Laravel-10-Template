@@ -15,7 +15,7 @@ class RefreshAll extends Command
      * @var string
      */
 
-    protected $signature = 'db:rebuild';
+    protected $signature = 'app:rebuild';
 
     /**
      * The console command description.
