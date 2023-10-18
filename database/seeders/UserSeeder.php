@@ -16,14 +16,19 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        // Deleted User
-        User::factory()->create([
+        $super_admin = User::factory()->create([
+            'name' => 'super.admin',
+            'email' => env('SUPER_ADMIN_EMAIL'),
+            'email_verified_at' => now(),
+            'password' => env('SUPER_ADMIN_PASSWORD')
+        ]);
+
+        $user = User::factory()->create([
             'name' => 'Leila Hold',
-            'email' => 'leilasTrash@trashmail.de',
+            'email' => env('USER_EMAIL'),
             'email_verified_at' => null,
-            'remember_token' => token_name(10),
-            'password' => bcrypt('leilas_password'),
-            'deleted_at' => now(),
+            'password' => env('USER_PASSWORD'),
+            'deleted_at' => now()
         ]);
     }
 }
