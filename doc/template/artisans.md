@@ -50,6 +50,7 @@ php artisan make:pivot langs people
 php artisan make:rule OddRule
 php artisan make:middleware LanguageManager
 php artisan make:middleware AuthOnlyInProduction
+php artisan make:middleware AutoAuthSuperAdmin
 ```
 
 ## Action from Laravel Actions
