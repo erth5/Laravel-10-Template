@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AuthOnlyInProduction;
 use App\Http\Middleware\LanguageManager;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -39,7 +40,6 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
 
             LanguageManager::class,
-
         ],
 
         'api' => [
@@ -71,5 +71,7 @@ class Kernel extends HttpKernel
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+
+        'auth.only.production' => AuthOnlyInProduction::class,
     ];
 }
