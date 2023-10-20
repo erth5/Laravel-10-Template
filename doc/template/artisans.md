@@ -75,6 +75,20 @@ php artisan db:wipe --force
 php artisan session:table
 ```
 
+## Modules
+
+```terminal
+php artisan make:command Module/Deploy
+php artisan make:command Module/Download
+php artisan make:command Module/Install
+
+php artisan make:command Module/Purge
+php artisan make:command Module/Uninstall
+php artisan make:command Module/Delete
+
+php artisan make:command Module/Upload
+```
+
 ## Publisher
 
 ```terminal
