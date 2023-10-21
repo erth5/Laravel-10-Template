@@ -33,7 +33,6 @@ class Download extends Command
         $this->serverUrl = env('MODULE_SERVER_URL');
         $this->serverPath = env('MODULE_SERVER_PATH');
         $this->password = env('MODULE_SERVER_PASSWORD');
-        $name = strtolower($this->argument('name'));
     }
 
     /**
@@ -41,6 +40,7 @@ class Download extends Command
      */
     public function handle()
     {
+        $this->name = strtolower($this->argument('name'));
         $moduleFolder = base_path(modules_path($this->name));
 
         $this->prepareDirectory($moduleFolder);
@@ -51,6 +51,10 @@ class Download extends Command
     }
     protected function prepareDirectory(string $moduleFolder)
     {
+        if (!File::exist('modules')) {
+            File::makeDirectory('modules');
+        }
+
         if (!File::exists($moduleFolder)) {
             if (File::makeDirectory($moduleFolder, 0755, true)) {
                 $this->info("Successfully created folder: {$moduleFolder}");

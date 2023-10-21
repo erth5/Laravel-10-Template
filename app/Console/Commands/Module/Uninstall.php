@@ -20,11 +20,15 @@ class Uninstall extends Command
      */
     protected $description = 'Command description';
 
+    const SUCCESS = 0;
+    const RUNTIME_FAULT = 1;
+    const SYNTAX_FAULT = 2;
     /**
      * Execute the console command.
      */
     public function handle()
     {
         $name = strtolower($this->argument('name'));
+        $moduleFolder = base_path(modules_path($this->name));
     }
 }
