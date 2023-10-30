@@ -6,33 +6,29 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
 
-
-class RefreshAll extends Command
+class Reset extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-
-    protected $signature = 'app:rebuild';
+    protected $signature = 'app:reset';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Reset the DB for working in this Project. Works on windows, debian, docker';
+    protected $description = 'Entwicklerwerkzeug: Setzt die Datenbank und Laravel Logs zurück.';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-
-        /* Konfig Clear wirkt manchmal nicht */
         Artisan::call('config:clear');
-        Artisan::call('config:cache');
+
         if (!env('APP_URL')) {
             exit(".env wurde nicht geladen.");
         }
@@ -42,12 +38,7 @@ class RefreshAll extends Command
             file_put_contents($log, "");
         }
 
-
         try {
-
-            /** Konfig-Cache gibt aus der .env null zurück */
-            Artisan::call('config:clear');
-
             if (config('app.dockerized')) {
                 $this->info('Migrating in Docker environment.');
                 exec("docker compose run --rm artisan migrate:fresh --seed", $output, $result);
@@ -57,7 +48,7 @@ class RefreshAll extends Command
             }
             switch ($result) {
                 case 0:
-                    // Log::debug($output);
+                    Artisan::call('config:cache');
                     $this->info(print_r($output));
                     return $output;
                 case 1:
