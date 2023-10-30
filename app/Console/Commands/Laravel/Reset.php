@@ -39,7 +39,7 @@ class Reset extends Command
 
         if (!config('app.dockerized')) {
             $this->info('Migrating on linux or windows');
-            $this->info(\Artisan::call('migrate:fresh --seed', ['--force' => true]));
+            $this->info(\Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]));
             $this->info(\Artisan::output());
 
             $this->info(\Artisan::call('config:cache'));
@@ -47,7 +47,7 @@ class Reset extends Command
         } else {
             try {
                 $this->info('Migrating in Docker environment.');
-                exec("docker compose run --rm artisan migrate:fresh --seed", $output, $result);
+                exec("docker compose run --rm artisan migrate:fresh --seed --force", $output, $result);
                 switch ($result) {
                     case 0:
                         $this->info(\Artisan::call('config:cache'));
