@@ -31,7 +31,7 @@ class Systeminfo extends Command
             exec("systeminfo", $output, $result);
             switch ($result) {
                 case 0:
-                    Log::debug($output);
+                    logger($output);
                     break;
                 case 1:
                     Log::error(get_class($this) . ' Runtime Fault');

@@ -39,7 +39,7 @@ return new class extends Migration
             if (!unlink($resource_file)) {
                 echo ("$resource_file cannot be deleted due to an error");
             } else {
-                Log::debug("$resource_file has been deleted");
+                logger("$resource_file has been deleted");
             }
         }
     }

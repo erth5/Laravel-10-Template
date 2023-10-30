@@ -34,7 +34,7 @@ class ClearKernel extends Command
             exec("sudo purge-old-kernels " . $keep, $output, $result);
             switch ($result) {
                 case 0:
-                    Log::debug($output);
+                    logger($output);
                     return $output;
                 case 1:
                     Log::warning(get_class($this) . ' Runtime Fault');

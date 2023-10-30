@@ -6,7 +6,6 @@ use Doctrine\Inflector\InflectorFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -61,7 +60,7 @@ class UtilService
         if (!$this->databaseName) {
             try {
                 $this->databaseName = $databaseName ?? $this->getDbName(class_basename($object));
-                
+
                 $this->tableColumnNames = $this->getDbColumnsWithoutBoolean($this->databaseName);
                 $this->checkboxtableColumnNames = $this->getDbBooleanColumns($this->databaseName);
             } catch (\Exception $e) {
@@ -93,7 +92,7 @@ class UtilService
                     $object->{$key} = $value;
                 }
             } else {
-                Log::debug('the key ' . $key . ' with value ' . $value . ' not found in ' . get_class($object));
+                logger('the key ' . $key . ' with value ' . $value . ' not found in ' . get_class($object));
             }
         }
 
@@ -122,7 +121,7 @@ class UtilService
                     $object->{$key} = $value;
                 }
             } else {
-                Log::debug('the key ' . $key . ' with value ' . $value . ' not found in ' . get_class($object));
+                logger('the key ' . $key . ' with value ' . $value . ' not found in ' . get_class($object));
             }
         }
 
@@ -143,14 +142,12 @@ class UtilService
         $tableColumnNames = $this->getDbColumnsWithoutBoolean($databaseName);
         $checkboxtableColumnNames = $this->getDbBooleanColumns($databaseName);
 
-        Log::debug('fillObjectFromRequest model: ' . $model);
-
         if (isset($tableColumnNames)) {
             foreach ($tableColumnNames as $columnName) {
                 if ($req->has($columnName)) {
                     if ($withNullValues || $req->get($columnName) != null) {
                         if ($model->{$columnName} != $req->{$columnName}) {
-                            Log::debug('Update DB Column ' . $columnName .
+                            logger('Update DB Column ' . $columnName .
                                 ' from ' . $model->{$columnName} .
                                 ' to ' . $req->{$columnName});
 
@@ -161,9 +158,11 @@ class UtilService
             }
         }
 
+        logger("filled $model FromRequest");
+
         if (isset($checkboxtableColumnNames)) {
             foreach ($checkboxtableColumnNames as $checkboxColumnName) {
-                Log::debug('Update DB Checkbox Column ' . $checkboxColumnName .
+                logger('Update DB Checkbox Column ' . $checkboxColumnName .
                     ' from ' . $model->{$checkboxColumnName} ?? 'false' .
                     ' to ' . $req->{$checkboxColumnName}) == 'false';
 
@@ -211,7 +210,7 @@ class UtilService
     public function getDbName($model)
     {
         $inflector = InflectorFactory::create()->build();
-        return $inflector->pluralize($model); 
+        return $inflector->pluralize($model);
 
         /* Methode ohne Wörterbuch */
         // Überprüfen, ob das Model-Argument leer ist

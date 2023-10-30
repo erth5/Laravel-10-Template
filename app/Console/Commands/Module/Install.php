@@ -51,7 +51,7 @@ class Install extends Command
 
             switch ($result) {
                 case self::SUCCESS:
-                    Log::debug($output);
+                    logger($output);
                     break;
                 case self::RUNTIME_FAULT:
                 case self::SYNTAX_FAULT:

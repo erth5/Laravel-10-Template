@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Image;
 use App\Models\Person;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -35,7 +34,7 @@ class ImageSeeder extends Seeder
         $dest = storage_path('app\public\\') . $name;
         if (file_exists($src)) {
             File::copy($src, $dest);
-            Log::debug('seeding: image ' . $name . 'successful copied');
+            logger("seeding: image $name successful copied");
         } else
             echo ('seeding: Example Image not found');
     }

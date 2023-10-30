@@ -30,7 +30,7 @@ class Dir extends Command
             exec("dir", $output, $result);
             switch ($result) {
                 case 0:
-                    Log::debug($output);
+                    logger($output);
                     return $output;
                 case 1:
                     Log::warning(get_class($this) . ' Runtime Fault');
