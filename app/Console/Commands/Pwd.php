@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class Pwd extends Command
 {
@@ -33,15 +32,15 @@ class Pwd extends Command
                     logger($output);
                     return $output;
                 case 1:
-                    Log::warning(get_class($this) . ' Runtime Fault');
+                    logger()->warning(get_class($this) . ' Runtime Fault');
                     logger($output);
                     return false;
                 case 2:
-                    Log::warning(get_class($this) . ' Syntax Fault');
+                    logger()->warning(get_class($this) . ' Syntax Fault');
                     return false;
             }
         } catch (\Exception $e) {
-            Log::error($e);
+            logger()->error($e);
             return $e;
         }
     }

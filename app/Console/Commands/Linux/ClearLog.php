@@ -3,7 +3,6 @@
 namespace App\Console\Commands\Linux;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class ClearLog extends Command
 {
@@ -34,10 +33,10 @@ class ClearLog extends Command
                     logger($output);
                     return $output;
                 case 1:
-                    Log::warning(get_class($this) . ' Runtime Fault');
+                    logger()->warning(get_class($this) . ' Runtime Fault');
                     return false;
                 case 2:
-                    Log::warning(get_class($this) . ' Syntax Fault');
+                    logger()->warning(get_class($this) . ' Syntax Fault');
                     return false;
             }
         } catch (\Exception $e) {

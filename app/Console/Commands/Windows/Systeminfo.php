@@ -4,7 +4,6 @@ namespace App\Console\Commands\Windows;
 
 use Exception;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class Systeminfo extends Command
 {
@@ -34,12 +33,12 @@ class Systeminfo extends Command
                     logger($output);
                     break;
                 case 1:
-                    Log::error(get_class($this) . ' Runtime Fault');
-                    Log::error($output);
+                    logger()->error(get_class($this) . ' Runtime Fault');
+                    logger()->error($output);
                     return $output;
                 case 2:
-                    Log::error(get_class($this) . ' Syntax Fault');
-                    Log::error($output);
+                    logger()->error(get_class($this) . ' Syntax Fault');
+                    logger()->error($output);
                     return $output;
             }
         } catch (Exception $e) {

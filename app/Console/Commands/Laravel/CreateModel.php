@@ -4,7 +4,6 @@ namespace App\Console\Commands\Laravel;
 
 use Exception;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class CreateModel extends Command
 {
@@ -36,11 +35,11 @@ class CreateModel extends Command
                     $this->info(print_r($output));
                     break;
                 case 1:
-                    Log::warning(get_class($this) . ' Runtime Fault');
+                    logger()->warning(get_class($this) . ' Runtime Fault');
                     $this->info(print_r($output));
                     break;
                 case 2:
-                    Log::error(get_class($this) . ' Syntax Fault');
+                    logger()->error(get_class($this) . ' Syntax Fault');
                     $this->info(print_r($output));
             }
 
@@ -51,11 +50,11 @@ class CreateModel extends Command
                         $this->info(print_r($output));
                         return $output;
                     case 1:
-                        Log::warning(get_class($this) . ' Runtime Fault');
+                        logger()->warning(get_class($this) . ' Runtime Fault');
                         $this->info(print_r($output));
                         return false;
                     case 2:
-                        Log::error(get_class($this) . ' Syntax Fault');
+                        logger()->error(get_class($this) . ' Syntax Fault');
                         $this->info(print_r($output));
                         return false;
                 }

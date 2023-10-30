@@ -4,7 +4,6 @@ namespace App\Console\Commands\Module;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class Install extends Command
 {
@@ -55,12 +54,12 @@ class Install extends Command
                     break;
                 case self::RUNTIME_FAULT:
                 case self::SYNTAX_FAULT:
-                    Log::warning(get_class($this) . ' Fault');
+                    logger()->warning(get_class($this) . ' Fault');
                     break;
             }
         } catch (\Exception $e) {
             $this->error($e->getMessage());
-            Log::error($e);
+            logger()->error($e);
         }
     }
 
@@ -92,7 +91,7 @@ class Install extends Command
                     break;
                 case self::RUNTIME_FAULT:
                 case self::SYNTAX_FAULT:
-                    Log::warning(get_class($this) . ' Fault');
+                    logger()->warning(get_class($this) . ' Fault');
                     $this->info(print_r($output, true));
                     break;
             }

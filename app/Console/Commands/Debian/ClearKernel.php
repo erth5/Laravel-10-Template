@@ -3,7 +3,6 @@
 namespace App\Console\Commands\Debian;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class ClearKernel extends Command
 {
@@ -37,16 +36,16 @@ class ClearKernel extends Command
                     logger($output);
                     return $output;
                 case 1:
-                    Log::warning(get_class($this) . ' Runtime Fault');
+                    logger()->warning(get_class($this) . ' Runtime Fault');
                     return false;
                 case 2:
-                    Log::warning(get_class($this) . ' Syntax Fault');
+                    logger()->warning(get_class($this) . ' Syntax Fault');
                     return false;
             }
         } catch (\Exception $e) {
 
             $this->error($e->getMessage());
-            Log::error($e);
+            logger()->error($e);
             return $e;
         }
     }

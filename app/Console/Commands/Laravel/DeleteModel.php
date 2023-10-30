@@ -199,7 +199,7 @@ class DeleteModel extends Command
                 }
 
             } catch (\Exception $e) {
-                Log::error($e);
+                logger()->error($e);
                 $this->error($e->getMessage());
                 return $e;
             }
