@@ -28,30 +28,22 @@ class Reset extends Command
         $this->info(\Artisan::call('config:clear'));
         $this->info(\Artisan::output());
 
-        if (!env('APP_URL')) {
-            exit(".env wurde nicht geladen.");
-        }
-
-        $log = storage_path('logs/laravel.log');
-        if (file_exists($log)) {
-            file_put_contents($log, "");
-        }
+        $this->info(\Artisan::call('config:cache'));
+        $this->info(\Artisan::output());
 
         if (!config('app.dockerized')) {
             $this->info('Migrating on linux or windows');
             $this->info(\Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]));
             $this->info(\Artisan::output());
-
-            $this->info(\Artisan::call('config:cache'));
-            $this->info(\Artisan::output());
+            $this->finishUp();
         } else {
             try {
                 $this->info('Migrating in Docker environment.');
                 exec("docker compose run --rm artisan migrate:fresh --seed --force", $output, $result);
+                $this->info(\Artisan::output());
                 switch ($result) {
                     case 0:
-                        $this->info(\Artisan::call('config:cache'));
-                        $this->info(\Artisan::output());
+                        $this->finishUp();
                         return $output;
                     case 1:
                         logger()->warning(get_class($this) . ' Runtime Fault');
@@ -67,5 +59,10 @@ class Reset extends Command
                 return $e->getMessage();
             }
         }
+    }
+    private function finishUp()
+    {
+        $logPath = storage_path('logs/laravel.log');
+        file_put_contents($logPath, '', LOCK_EX);
     }
 }

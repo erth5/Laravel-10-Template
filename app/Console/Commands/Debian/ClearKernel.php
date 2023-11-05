@@ -42,8 +42,8 @@ class ClearKernel extends Command
                     logger()->warning(get_class($this) . ' Syntax Fault');
                     return false;
             }
+            
         } catch (\Exception $e) {
-
             $this->error($e->getMessage());
             logger()->error($e);
             return $e;

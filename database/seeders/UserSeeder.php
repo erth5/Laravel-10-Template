@@ -23,8 +23,15 @@ class UserSeeder extends Seeder
             'password' => env('SUPER_ADMIN_PASSWORD')
         ]);
 
+        $developer = User::factory()->create([
+            'name' => 'admin.developer',
+            'email' => env('DEVELOPER_EMAIL'),
+            'email_verified_at' => now(),
+            'password' => env('DEVELOPER_PASSWORD')
+        ]);
+
         $user = User::factory()->create([
-            'name' => 'Leila Hold',
+            'name' => 'trashed.Leila Hold',
             'email' => env('USER_EMAIL'),
             'email_verified_at' => null,
             'password' => env('USER_PASSWORD'),

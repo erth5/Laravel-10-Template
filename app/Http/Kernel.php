@@ -3,7 +3,10 @@
 namespace App\Http;
 
 use App\Http\Middleware\AuthOnlyInProduction;
+use App\Http\Middleware\AutoAuthDeveloper;
+use App\Http\Middleware\AutoAuthSuperAdmin;
 use App\Http\Middleware\LanguageManager;
+use App\Http\Middleware\MultipleDomains;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -72,6 +75,7 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
 
-        'auth.only.production' => AuthOnlyInProduction::class,
+        'multipleDomains' => MultipleDomains::class,
+        'auth.production_only' => AuthOnlyInProduction::class,
     ];
 }

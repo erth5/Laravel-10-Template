@@ -40,7 +40,7 @@ class Dir extends Command
             }
         } catch (\Exception $e) {
             $this->error($e->getMessage());
-            // logger()->error($e);
+            logger()->error($e);
             return $e;
         }
     }
