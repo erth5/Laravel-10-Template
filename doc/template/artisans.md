@@ -51,8 +51,8 @@ php artisan make:rule OddRule
 php artisan make:middleware LanguageManager
 
 php artisan make:middleware AuthOnlyInProduction
-php artisan make:middleware AutoAuthSuperAdmin or
-php artisan make:middleware AutoAuthDeveloper
+php artisan make:command Laravel/ComponentList
+php artisan make:command Laravel/ConvertTextToConfig
 ```
 
 ## Action from Laravel Actions
