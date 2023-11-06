@@ -26,10 +26,7 @@ class Reset extends Command
     public function handle()
     {
         $this->info(\Artisan::call('config:clear'));
-        $this->info(\Artisan::output());
-
         $this->info(\Artisan::call('config:cache'));
-        $this->info(\Artisan::output());
 
         if (!config('app.dockerized')) {
             $this->info('Migrating on linux or windows');
