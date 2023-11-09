@@ -1,0 +1,75 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ namespacedModel }};
+
+class {{ class }}
+{
+    /* after a record has been retrieved */
+    public function retrieved({{ model }} ${{ modelVariable }}): void
+    {
+        //
+    }
+
+    /* before a record has been created */
+    public function creating({{ model }} ${{ modelVariable }}): void
+    {
+        //
+    }
+
+    /* before a record is updated */
+    public function updating({{ model }} ${{ modelVariable }}): void
+    {
+        //
+    }
+
+    /* before a record is saved (either created or updated) */
+    public function saving({{ model }} ${{ modelVariable }}): void
+    {
+        //
+    }
+
+    /* before a record is deleted or soft-deleted */
+    public function deleting({{ model }} ${{ modelVariable }}): void
+    {
+        //
+    }
+
+    /* before a soft-deleted record is going to be restored */
+    public function restoring({{ model }} ${{ modelVariable }}): void
+    {
+        //
+    }
+
+
+    /* after a record has been created */
+    public function created({{ model }} ${{ modelVariable }}): void
+    {
+        //
+    }
+
+    /* after a record has been updated */
+    public function updated({{ model }} ${{ modelVariable }}): void
+    {
+        //
+    }
+
+    /* after a record has been deleted or soft-deleted */
+    public function deleted({{ model }} ${{ modelVariable }}): void
+    {
+        //
+    }
+
+    /* after a soft-deleted record has been restored */
+    public function restored({{ model }} ${{ modelVariable }}): void
+    {
+        //
+    }
+
+    /* after a record has been deleted */
+    public function forceDeleted({{ model }} ${{ modelVariable }}): void
+    {
+        //
+    }
+}
