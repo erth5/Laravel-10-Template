@@ -12,7 +12,7 @@ class CreateModel extends Command
      *
      * @var string
      */
-    protected $signature = 'app:create-model {name}';
+    protected $signature = 'create:model {name}';
 
     /**
      * The console command description.

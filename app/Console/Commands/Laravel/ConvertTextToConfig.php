@@ -11,7 +11,7 @@ class ConvertTextToConfig extends Command
      *
      * @var string
      */
-    protected $signature = 'app:convert-to-config {path}';
+    protected $signature = 'convert:config {path}';
 
     /**
      * The console command description.

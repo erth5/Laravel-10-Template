@@ -14,7 +14,7 @@ class DeleteModel extends Command
      *
      * @var string
      */
-    protected $signature = 'app:delete-model {name}';
+    protected $signature = 'delete:model {name}';
 
     /**
      * The console command description.

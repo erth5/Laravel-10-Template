@@ -11,7 +11,7 @@ class ClearKernel extends Command
      *
      * @var string
      */
-    protected $signature = 'app:clear-kernel';
+    protected $signature = 'clear:kernel';
 
     /**
      * The console command description.
