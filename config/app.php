@@ -197,9 +197,10 @@ return [
 
     ],
 
+    'on_windows' => strtoupper(substr(PHP_OS, 0, 3)) === 'WIN',
+    'on_linux' => str_contains(php_uname(), 'Linux'),
     'on_debian' => file_exists('/etc/debian_version') && strpos(file_get_contents('/etc/debian_version'), 'Ubuntu') == true,
     'on_ubuntu' => file_exists('/etc/lsb-release') && strpos(file_get_contents('/etc/lsb-release'), 'Ubuntu') == true,
-    'on_windows' => strtoupper(substr(PHP_OS, 0, 3)) === 'WIN',
     'on_centos' => file_exists('/etc/centos-release'),
     'on_rhel' => file_exists('/etc/redhat-release'),
     'on_fedora' => file_exists('/etc/fedora-release'),
@@ -207,6 +208,7 @@ return [
     'on_mac' => file_exists("/etc/bashrc_Apple_Terminal"),
     'dockerized' => app(\App\Services\UtilService::class)->dockerized(),
     'system_package_manager' => app(\App\Services\UtilService::class)->getSystemPackageManger(),
+    'system_package_managers' => app(\App\Services\UtilService::class)->getSystemPackageMangers(),
 
     /*
     |--------------------------------------------------------------------------

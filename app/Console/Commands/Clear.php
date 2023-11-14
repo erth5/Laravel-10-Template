@@ -25,9 +25,14 @@ class Clear extends Command
      */
     public function handle()
     {
-        // Cache::flush();
-        cache()->flush();
-        opcache_reset();
-        // rm -rf ~/.composer/cache - rmdir /s /q %USERPROFILE%\AppData\Roaming\Composer\Cache
+        if(config('on_linux')){
+        }
+
+        if(config('on_windows'))
+        try{
+            // rm -rf ~/.composer/cache - rmdir /s /q %USERPROFILE%\AppData\Roaming\Composer\Cache
+        }catch(\Exception $e){
+            
+        }
     }
 }
