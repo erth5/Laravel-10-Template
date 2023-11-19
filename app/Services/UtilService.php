@@ -502,7 +502,7 @@ class UtilService
                 exec("which $manager 2>&1", $output, $retval);
 
                 if ($retval === 0) {
-                    $manager[] = $manager;
+                    $managers[] = $manager;
                 }
             }
             return $managers;

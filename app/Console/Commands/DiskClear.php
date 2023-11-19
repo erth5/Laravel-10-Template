@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Process;
+use Symfony\Component\Process\Process;
 
 class DiskClear extends Command
 {
@@ -28,29 +28,25 @@ class DiskClear extends Command
     {
         if (config('on_linux')) {
             $commands = [
-                'rm -rf bootstrap/cache/*',
-                'rm -rf storage/logs/*.log',
-                'composer clear-cache',
-                'npm cache clean --force',
+                #'rm -rf bootstrap/cache/*',
+                #'rm -rf storage/logs/*.log',
+                #'composer clear-cache',
+                #'npm cache clean --force',
 
-                'apt-get clean',
-                'apt-get autoclean',
-                'apt-get autoremove --purge',
-                'rm -rf ~/.local/share/Trash/*',
-                'rm -rf /tmp/*',
-                'journalctl --vacuum-time=1d',
-                'find /var/log -type f -name "*.log" -exec truncate --size 0 {} \;',
-                'rm -rf ~/.cache/thumbnails/*',
-                'rm -rf ~/.cache/google-chrome',
-                'rm -rf ~/.cache/*',
-                'deborphan | xargs sudo apt-get -y remove --purge',
+                'apt clean',
+                #'apt autoclean',
+                #'apt autoremove --purge',
+                #'rm -rf ~/.local/share/Trash/*',
+                #'rm -rf /tmp/*',
+                #'journalctl --vacuum-time=1d',
+                #'find /var/log -type f -name "*.log" -exec truncate --size 0 {} \;',
+                #'rm -rf ~/.cache/thumbnails/*',
+                #'rm -rf ~/.cache/google-chrome',
+                #'rm -rf ~/.cache/*',
+                #'deborphan | xargs sudo apt-get -y remove --purge',
             ];
             $this->clear($commands);
         }
-
-        // if (config('on_ubuntu')) {
-        //     $this->clear($commands);
-        // }
 
         if (config('on_windows')) {
             $commands = [
@@ -79,6 +75,7 @@ class DiskClear extends Command
 
     public function clear($commands)
     {
+
         foreach ($commands as $command) {
             if (config('on_windows')) {
                 $process = new Process(['cmd', '/c', $command]);
@@ -92,7 +89,7 @@ class DiskClear extends Command
             if (!$process->isSuccessful()) {
                 $this->error('Fehler beim Ausführen: ' . $command . "\nError Output: " . $process->getErrorOutput());
             } else {
-                echo $process->getOutput();
+                $this->info($process->getOutput());
             }
         }
     }
