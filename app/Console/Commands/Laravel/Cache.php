@@ -25,15 +25,34 @@ class Cache extends Command
      */
     public function handle()
     {
-        if($this->argument('clear')){
+        if ($this->argument('clear')) {
             // Cache::flush();
             cache()->flush();
             opcache_reset();
             \Artisan::call('optimize:clear'); // Sämtliche Caches löschen
-        }else{
-            \Artisan::call('route:cache');
-            \Artisan::call('config:cache');
-            \Artisan::call('view:cache');
+
+            if (config('on_linux')) {
+                $this->clearComposerCache('rm -rf ~/.composer/cache');
+            }
+
+            if (config('on_windows')) {
+                $this->clearComposerCache('rmdir /s /q %USERPROFILE%\AppData\Roaming\Composer\Cache');
+            }
+        } else {
+            \Artisan::call('optimize');
+            // \Artisan::call('route:cache');
+            // \Artisan::call('config:cache');
+            // \Artisan::call('view:cache');
+        }
+    }
+    public function clearComposerCache($command)
+    {
+        exec($command, $output, $returnVar);
+
+        if ($returnVar !== 0) {
+            logger()->error("Fehler beim Leeren des Composer-Cache: " . implode("\n", $output));
+        } else {
+            logger()->info("Composer-Cache erfolgreich geleert.");
         }
     }
 }
