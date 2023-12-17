@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Process\Process;
 
 class DiskClear extends Command
@@ -12,7 +13,7 @@ class DiskClear extends Command
      *
      * @var string
      */
-    protected $signature = 'disk:clear';
+    protected $signature = 'disk:clear {type?}';
 
     /**
      * The console command description.
@@ -21,34 +22,42 @@ class DiskClear extends Command
      */
     protected $description = 'Schafft Speicherplatz auf dem System';
 
+    protected $useProcess;
+
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        if (config('on_linux')) {
+        $this->useProcess = strtolower($this->argument('type')) == 'process';
+        if(!$this->isConfigCached()) {
+            Artisan::call("optimize");
+        }
+        echo strpos(file_get_contents('/usr/lib/os-release'), 'Linux Mint') == true;
+        echo file_exists('/usr/lib/os-release') && strpos(file_get_contents('/usr/lib/os-release'), 'Linux Mint') == true;
+
+        if (str_contains(php_uname(), 'Linux')) {
             $commands = [
-                #'rm -rf bootstrap/cache/*',
-                #'rm -rf storage/logs/*.log',
-                #'composer clear-cache',
-                #'npm cache clean --force',
+                #'rm -rf ./storage/logs/*.log',
+                'rm -rf bootstrap/cache/*',
+                'composer clear-cache',
+                'npm cache clean --force',
 
                 'apt clean',
-                #'apt autoclean',
-                #'apt autoremove --purge',
-                #'rm -rf ~/.local/share/Trash/*',
-                #'rm -rf /tmp/*',
-                #'journalctl --vacuum-time=1d',
-                #'find /var/log -type f -name "*.log" -exec truncate --size 0 {} \;',
-                #'rm -rf ~/.cache/thumbnails/*',
-                #'rm -rf ~/.cache/google-chrome',
-                #'rm -rf ~/.cache/*',
-                #'deborphan | xargs sudo apt-get -y remove --purge',
+                'apt autoclean',
+                'apt autoremove --purge',
+                'rm -rf ~/.local/share/Trash/*',
+                'rm -rf /tmp/*',
+                'journalctl --vacuum-time=1d',
+                'find /var/log -type f -name "*.log" -exec truncate --size 0 {} \;',
+                'rm -rf ~/.cache/thumbnails/*',
+                'rm -rf ~/.cache/google-chrome',
+                'rm -rf ~/.cache/*',
             ];
             $this->clear($commands);
         }
 
-        if (config('on_windows')) {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $commands = [
                 // 'del /q /f %TEMP%\*', // Löschen aller Dateien im TEMP-Verzeichnis
                 // 'cleanmgr /sagerun:1', // Automatisierte Datenträgerbereinigung
@@ -75,22 +84,36 @@ class DiskClear extends Command
 
     public function clear($commands)
     {
-
         foreach ($commands as $command) {
-            if (config('on_windows')) {
-                $process = new Process(['cmd', '/c', $command]);
+
+            $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+            
+            if ($isWindows) {
+                $commandParts = $this->useProcess ? ['cmd', '/c', $command] : $command;
             } else {
-                // Unix-basierter Befehl
-                $process = new Process([$command]);
+                $commandParts = $this->useProcess ? [$command] : $command;
             }
+            
+            if ($this->useProcess) {
+                $process = new Process($commandParts); // unix basiert
+                $process->run();
+                if (!$process->isSuccessful()) {
+                    $this->error('Fehler beim Ausführen: ' . $command . "\nError Output: " . $process->getErrorOutput());
+                } else {
+                    $this->info($process->getOutput());
+                }
 
-            $process->run();
-
-            if (!$process->isSuccessful()) {
-                $this->error('Fehler beim Ausführen: ' . $command . "\nError Output: " . $process->getErrorOutput());
             } else {
-                $this->info($process->getOutput());
+                exec("sudo $commandParts", $output, $return);
+                #info($output);
+                echo $return;
             }
         }
+    }
+
+    public function isConfigCached()
+    {
+        $configCachePath = base_path('bootstrap/cache/config.php');
+        return file_exists($configCachePath);
     }
 }

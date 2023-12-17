@@ -28,11 +28,11 @@ Route::get('hello world', function () {
 });
 
 // unconventional, because no redirect
-$debugRoutes = array('example', 'test', 'debug', 'info', 'help');
-foreach ($debugRoutes as $route) {
-    Route::redirect($route . '/debug', '/debug', 301);  //generates 'any'
-    Route::get($route . '/{name?}', [DebugController::class, 'index'])->name('debug');
-}
+#$debugRoutes = array('example', 'test', 'debug', 'info', 'help');
+#foreach ($debugRoutes as $route) {
+#    Route::redirect($route . '/debug', '/debug', 301);  //generates 'any'
+#    Route::get($route . '/{name?}', [DebugController::class, 'index'])->name('debug');
+#}
 
 Route::controller(PermissionAndRoleController::class)->group(function () {
     Route::match(array('GET', 'POST'), '/permission/role', 'role')->name('editRolePermissions');
