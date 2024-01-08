@@ -2,15 +2,16 @@
 
 namespace App\Services;
 
-use Doctrine\Inflector\InflectorFactory;
-use Illuminate\Database\Eloquent\Model;
+use ReflectionClass;
+use RuntimeException;
 use Illuminate\Http\Request;
+use InvalidArgumentException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Model;
+use Doctrine\Inflector\InflectorFactory;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use InvalidArgumentException;
-use RuntimeException;
 
 // gettype($data) instanceof SupportRequest not supportet
 
@@ -561,6 +562,32 @@ class UtilService
         } catch (\Exception $e) {
             throw new InvalidArgumentException("Ungültiges Datum oder Zeit.");
         }
+    }
+
+    /**
+     * Model mit allen Beziehungen abrufen.
+     * Model muss zuerst aus der DB bezogen
+     * und dann hier gefüllt werden.
+     */
+    function loadAllRelations(Model $model) {
+        $reflector = new ReflectionClass($model);
+        $relations = [];
+    
+        foreach ($reflector->getMethods() as $method) {
+            if ($method->class != get_class($model) ||
+                !empty($method->getParameters()) ||
+                $method->getName() == __FUNCTION__) {
+                continue;
+            }
+    
+            $returnType = $method->getReturnType();
+            if ($returnType && $returnType instanceof \ReflectionNamedType && !$returnType->isBuiltin()) {
+                $methodName = $method->getName();
+                $relations[] = $methodName;
+            }
+        }
+    
+        return $model->load($relations);
     }
 
 }
