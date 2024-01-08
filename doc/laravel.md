@@ -1,3 +1,7 @@
+# use
+
+https://laravel-news.com/laravel-schema-rules
+
 # Observer
 
 retrieved : after a record has been retrieved.

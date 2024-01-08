@@ -3964,16 +3964,16 @@
         },
         {
             "name": "lorisleiva/laravel-actions",
-            "version": "v2.7.1",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lorisleiva/laravel-actions.git",
-                "reference": "5250614fd6b77e8e2780be0206174e069e94661d"
+                "reference": "54b73e29d39de3f4742c6b2152889c93a2dba990"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lorisleiva/laravel-actions/zipball/5250614fd6b77e8e2780be0206174e069e94661d",
-                "reference": "5250614fd6b77e8e2780be0206174e069e94661d",
+                "url": "https://api.github.com/repos/lorisleiva/laravel-actions/zipball/54b73e29d39de3f4742c6b2152889c93a2dba990",
+                "reference": "54b73e29d39de3f4742c6b2152889c93a2dba990",
                 "shasum": ""
             },
             "require": {
@@ -4027,7 +4027,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lorisleiva/laravel-actions/issues",
-                "source": "https://github.com/lorisleiva/laravel-actions/tree/v2.7.1"
+                "source": "https://github.com/lorisleiva/laravel-actions/tree/v2.7.2"
             },
             "funding": [
                 {
@@ -4035,7 +4035,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-08-24T10:20:57+00:00"
+            "time": "2024-01-08T10:48:01+00:00"
         },
         {
             "name": "lorisleiva/lody",
@@ -6907,16 +6907,16 @@
         },
         {
             "name": "swagger-api/swagger-ui",
-            "version": "v5.10.5",
+            "version": "v5.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swagger-api/swagger-ui.git",
-                "reference": "7582a437b30ac1c4998ff7aa3aca8e3e74e9f5e6"
+                "reference": "ba93596058941409cfe9cc1dd59fb84e1058e72c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/7582a437b30ac1c4998ff7aa3aca8e3e74e9f5e6",
-                "reference": "7582a437b30ac1c4998ff7aa3aca8e3e74e9f5e6",
+                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/ba93596058941409cfe9cc1dd59fb84e1058e72c",
+                "reference": "ba93596058941409cfe9cc1dd59fb84e1058e72c",
                 "shasum": ""
             },
             "type": "library",
@@ -6962,9 +6962,9 @@
             ],
             "support": {
                 "issues": "https://github.com/swagger-api/swagger-ui/issues",
-                "source": "https://github.com/swagger-api/swagger-ui/tree/v5.10.5"
+                "source": "https://github.com/swagger-api/swagger-ui/tree/v5.11.0"
             },
-            "time": "2023-12-14T12:09:05+00:00"
+            "time": "2024-01-08T12:54:37+00:00"
         },
         {
             "name": "symfony/console",
@@ -11552,16 +11552,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.54",
+            "version": "1.10.55",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "3e25f279dada0adc14ffd7bad09af2e2fc3523bb"
+                "reference": "9a88f9d18ddf4cf54c922fbeac16c4cb164c5949"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/3e25f279dada0adc14ffd7bad09af2e2fc3523bb",
-                "reference": "3e25f279dada0adc14ffd7bad09af2e2fc3523bb",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9a88f9d18ddf4cf54c922fbeac16c4cb164c5949",
+                "reference": "9a88f9d18ddf4cf54c922fbeac16c4cb164c5949",
                 "shasum": ""
             },
             "require": {
@@ -11610,7 +11610,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-05T15:50:47+00:00"
+            "time": "2024-01-08T12:32:40+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -13316,5 +13316,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
