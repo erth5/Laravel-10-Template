@@ -72,8 +72,19 @@ class Resource extends Command
         /* ### Migration ### */
         $inflector = InflectorFactory::create()->build();
         $tableName = "_create_" . strtolower(Str::plural(Str::snake($resource))) . "_table.php";
-        $allMigrations = scandir("$projectPath/database/migrations/");
-        $migrationPath = "$projectPath/database/migrations/*.php";
+
+        if (is_dir("$projectPath/app/database/migrations/")) {
+            $migrationDir = "$projectPath/app/database/migrations/"; // ältere Laravel Versionen
+        }
+        if (is_dir("$projectPath/database/migrations/")) {
+            $migrationDir = "$projectPath/database/migrations/";
+        }
+        if (!$migrationDir) {
+            echo "Kein migrations Ordner gefunden" . PHP_EOL;
+        }
+
+        $allMigrations = scandir("$migrationDir");
+        $migrationPath = "$migrationDir/*.php";
         $migrations = null;
 
         foreach (glob($migrationPath) as $migration) {
@@ -84,7 +95,7 @@ class Resource extends Command
         }
         if ($migrations == null) {
             echo "Keine Migration gefunden" . PHP_EOL;
-            echo  $tableName . PHP_EOL;
+            echo $tableName . PHP_EOL;
         } else {
             if (count($migrations) == 1) {
                 echo "Gefundene Migration: " . $migrations[0] . PHP_EOL;
@@ -104,11 +115,11 @@ class Resource extends Command
         /* ### */
 
         /* ### Filament ### */
-        exec('composer show filament/filament', $output, $return_var);
-        if ($return_var === 0) {
-
+        // exec('composer show filament/filament', $output, $return_var);
+        if ($this->isPackageInstalled('filament/filament')) {
+            
             $filamentFolder = app_path('Filament');
-            $filamentResourceFolder =  app_path('Filament/Resources');
+            $filamentResourceFolder = app_path('Filament/Resources');
             $filamentResourcePath = $filamentResourceFolder . "/" . $resource . "Resource";
             $filamentPagesPath = $filamentResourcePath . "/Pages";
             if (!File::exists($filamentFolder)) {
@@ -124,7 +135,7 @@ class Resource extends Command
             if (!File::exists($filamentPagesPath)) {
                 File::makeDirectory($filamentPagesPath);
             }
-
+            
             $filament = [
                 "app/Filament/Resources/" . $resource . "Resource/Pages/Create" . $resource . ".php",
                 "app/Filament/Resources/" . $resource . "Resource/Pages/Edit" . $resource . ".php",
@@ -134,7 +145,7 @@ class Resource extends Command
             $paths = array_merge($paths, $filament);
         }
         /* ### */
-
+        
         /* Kopiervorgang */
         foreach ($paths as $filePath) {
             $dest = base_path() . "/" . $filePath;
@@ -158,4 +169,27 @@ class Resource extends Command
             // }
         }
     }
+    function isPackageInstalled($packageName) {
+        $composerLockPath = base_path('composer.lock');
+        if (!file_exists($composerLockPath)) {
+            return false;
+        }
+    
+        $composerLock = json_decode(file_get_contents($composerLockPath), true);
+    
+        if (!isset($composerLock['packages']) && !isset($composerLock['packages-dev'])) {
+            return false;
+        }
+    
+        $packages = array_merge($composerLock['packages'], $composerLock['packages-dev'] ?? []);
+    
+        foreach ($packages as $package) {
+            if (isset($package['name']) && $package['name'] === $packageName) {
+                return true;
+            }
+        }
+    
+        return false;
+    }
+    
 }

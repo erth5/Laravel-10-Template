@@ -569,25 +569,50 @@ class UtilService
      * Model muss zuerst aus der DB bezogen
      * und dann hier gefüllt werden.
      */
-    function loadAllRelations(Model $model) {
+    function loadAllRelations(Model $model)
+    {
         $reflector = new ReflectionClass($model);
         $relations = [];
-    
+
         foreach ($reflector->getMethods() as $method) {
-            if ($method->class != get_class($model) ||
+            if (
+                $method->class != get_class($model) ||
                 !empty($method->getParameters()) ||
-                $method->getName() == __FUNCTION__) {
+                $method->getName() == __FUNCTION__
+            ) {
                 continue;
             }
-    
+
             $returnType = $method->getReturnType();
             if ($returnType && $returnType instanceof \ReflectionNamedType && !$returnType->isBuiltin()) {
                 $methodName = $method->getName();
                 $relations[] = $methodName;
             }
         }
-    
+
         return $model->load($relations);
     }
 
+    function isPackageInstalled($packageName)
+    {
+        $composerLockPath = base_path('composer.lock');
+        if (!file_exists($composerLockPath)) {
+            return false;
+        }
+
+        $composerLock = json_decode(file_get_contents($composerLockPath), true);
+
+        if (!isset($composerLock['packages']) && !isset($composerLock['packages-dev'])) {
+            return false;
+        }
+
+        $packages = array_merge($composerLock['packages'], $composerLock['packages-dev'] ?? []);
+
+        foreach ($packages as $package) {
+            if (isset($package['name']) && $package['name'] === $packageName) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
