@@ -16,5 +16,4 @@ use App\Http\Controllers\PersonController;
 
 Route::resource('users', UserController::class);
 Route::resource('people', PersonController::class);
-Route::resource('tags', TagController::class)->only('list');
 Route::resource('images', ImageController::class);
