@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 
@@ -16,41 +17,36 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        if (env('SUPER_ADMIN_EMAIL') && env('SUPER_ADMIN_PASSWORD')) {
-            $super_admin = User::create([
-                'name' => 'super.admin',
-                'email' => env('SUPER_ADMIN_EMAIL'),
-                'email_verified_at' => now(),
-                'password' => env('SUPER_ADMIN_PASSWORD')
-            ]);
-        }
+        if (config()->has('users')) {
+            $users = config()->get('users');
+            if (!$users) {
+                return;
+            }
 
-        if (env('DEVELOPER_EMAIL') && env('DEVELOPER_PASSWORD')) {
-            $developer = User::create([
-                'name' => 'admin.developer',
-                'email' => env('DEVELOPER_EMAIL'),
-                'email_verified_at' => now(),
-                'password' => env('DEVELOPER_PASSWORD')
-            ]);
-        }
+            foreach ($users as $seedUser) {
+                $startUser = User::create([
+                    'name' => $seedUser['name'],
+                    'email' => $seedUser['email'],
+                    'email_verified_at' => now(),
+                    'password' => bcrypt($seedUser['password']),
+                    'abbreviation' => $seedUser['abbreviation'],
+                ]);
 
-        if (env('USER_EMAIL') && env('USER_PASSWORD')) {
-            $user = User::create([
-                'name' => 'default.user',
-                'email' => env('USER_EMAIL'),
-                'email_verified_at' => null,
-                'password' => env('USER_PASSWORD'),
-            ]);
-        }
-
-        if (env('TRASHED_EMAIL') && env('TRASHED_PASSWORD')) {
-            $trashed = User::create([
-                'name' => 'trashed.Leila Hold',
-                'email' => env('TRASHED_EMAIL'),
-                'email_verified_at' => null,
-                'password' => env('TRASHED_PASSWORD'),
-                'deleted_at' => now()
-            ]);
+                $roles = $seedUser['roles'];
+                if (!empty($roles)) {
+                    if (in_array('all', $roles)) {
+                        $startUser->assignRole(Role::all());
+                    } else {
+                        foreach ($roles as $key => $role) {
+                            $startUser->assignRole($role);
+                        }
+                    }
+                }
+                if (isset($seedUser['softdeleted'])) {
+                    $startUser->delete();
+                }
+                $startUser->saveOrFail();
+            }
         }
     }
 }
