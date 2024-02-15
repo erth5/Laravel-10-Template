@@ -209,8 +209,8 @@ return [
     'on_arch' => file_exists('/etc/arch-release'),
     'on_mac' => file_exists("/etc/bashrc_Apple_Terminal"),
     'dockerized' => app(\App\Services\UtilService::class)->dockerized(),
-    'system_package_manager' => app(\App\Services\UtilService::class)->getSystemPackageManger(),
-    'system_package_managers' => app(\App\Services\UtilService::class)->getSystemPackageMangers(),
+    'system_package_manager' => app(\App\Services\UtilService::class)->getSystemPackageManager(),
+    'system_package_managers' => app(\App\Services\UtilService::class)->getSystemPackageManagers(),
 
     /*
     |--------------------------------------------------------------------------

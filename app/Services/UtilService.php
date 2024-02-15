@@ -447,7 +447,7 @@ class UtilService
         }
     }
 
-    public function getSystemPackageManger()
+    public function getSystemPackageManager()
     {
         if (strtolower(php_uname()) == 'windows') {
             return 'choco'; // winget
@@ -474,7 +474,7 @@ class UtilService
         return;
     }
 
-    public function getSystemPackageMangers()
+    public function getSystemPackageManagers()
     {
         $managers = [];
 
