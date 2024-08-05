@@ -2,18 +2,15 @@
 
 namespace App\Providers;
 
-use Carbon\Carbon;
 use App\ResourceRegistrar;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\ServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Support\Facades\RateLimiter;
-use AshAllenDesign\ConfigValidator\Services\ConfigValidator;
 use Illuminate\Routing\ResourceRegistrar as BaseResourceRegistrar;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,12 +27,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Model::shouldBeStrict();
+        //Model::shouldBeStrict();
         $this->configureRateLimiting();
 
         if ($this->app->environment('production') || $this->app->environment('staging')) {
             URL::forceScheme('https');
         }
+
+        // Schema::defaultStringLength(191); // LV5.8, MySQL 5.7
+        // View::share('global_variables', config('app.variables'));
 
         /**
          * This action will block dusk tests, because

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Debug;
 
-use Exception;
-use App\Models\Image;
-use Illuminate\Http\Request;
-use App\Services\ImageService;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreImageRequest;
+use App\Models\Image;
+use App\Services\ImageService;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @deprecated
@@ -33,10 +33,12 @@ class ImageController extends Controller
     public function index()
     {
         $images = Image::withTrashed()->get();
-        if ($images->isEmpty())
+        if ($images->isEmpty()) {
             return view('image.index');
-        else
+        } else {
             return view('image.index', compact('images'));
+        }
+
     }
 
     /**
@@ -53,15 +55,15 @@ class ImageController extends Controller
     public function store(StoreImageRequest $request)
     {
         /* Validation
-         +Recommendet RequestFile
-         app/Rules to add own validator rules
-         non static in module
-         static in Service (this case service use other Request Facade)
-         +or in controller*/
+        +Recommendet RequestFile
+        app/Rules to add own validator rules
+        non static in module
+        static in Service (this case service use other Request Facade)
+        +or in controller*/
 
         /* has own return back -> no proof required */
         $request->validate(
-            ['image' => 'required',]
+            ['image' => 'required']
         );
         $request->validate([
             'image' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
@@ -76,7 +78,8 @@ class ImageController extends Controller
             /* Pfad mit Namen und speichern*/
             // $path = $request->file('image')->storeAs('images', $name, 'public');
             /* Pfad ohne Namen */
-            $name = time() . $request->file('image')->has('name');
+            $name = "name";
+            // $name = time() . $request->file('image')->has('name');
             $request->file('image')->storeAs('images', $name, 'public');
             $metadata = Image::create();
             $metadata->name = $name;
@@ -183,7 +186,7 @@ class ImageController extends Controller
     {
         $old_name = $image->name;
         $relative_source_path = 'public/' . $image->path . $image->name;
-        $relative_target_path =  'public/' . $image->path . time() . $request->rename . '.' . $image->extension;
+        $relative_target_path = 'public/' . $image->path . time() . $request->rename . '.' . $image->extension;
         try {
             Storage::move($relative_source_path, $relative_target_path);
             // rename(public_path('storage/' . $image->path . $image->name), public_path('storage/' . $image->path . $request->rename . '.' . $image->extension));
@@ -231,7 +234,6 @@ class ImageController extends Controller
         // dd($request, $validation, $dbItem, $name, $path);
         return redirect('image')->with('status', 'Image Has been uploaded:')->with('imageName', $name)->with('images', $images);
     }
-
 
     /** Debug Image Data*/
     public function debug(Request $req)
